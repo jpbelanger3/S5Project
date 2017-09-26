@@ -1,0 +1,19 @@
+{
+    "dev": {
+      "driver": "pg",
+      "user": "postgres",
+      "password": "O8bSkVesnUfi",
+      "host": "localhost",
+      "database": "s5-project",
+      "schema": "public"
+    },
+    "prod": {
+      "driver": "pg",
+      "user": "brnsbhvbnuluje",
+      "password": "5786de0d0b34c8f7d5ea567ebc5683320e138c4df545bb3ae20ede7ae4d4d3c3",
+      "host": "ec2-204-236-236-188.compute-1.amazonaws.com",
+      "database": "ddo98gdi5vqkrl",
+      "schema": "public",
+      "ssl": true
+    }
+}
