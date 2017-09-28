@@ -8,8 +8,8 @@ var connectionObject = ConnectionStringParser((process.env.DATABASE_URL || devDA
 var pool = new pg.Pool(connectionObject)
 
 
-
 app.set('port', (process.env.PORT || 8080))
+console.log('hello')
 
 app.use(express.static(__dirname + '/public'))
 
