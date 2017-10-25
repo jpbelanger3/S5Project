@@ -8,8 +8,7 @@ var connectionObject = ConnectionStringParser((process.env.DATABASE_URL || devDA
 var pool = new pg.Pool(connectionObject)
 
 
-app.set('port', (process.env.PORT || 8080))
-console.log('hello')
+app.set('port', (process.env.PORT || 8081))
 
 app.use(express.static(__dirname + '/public'))
 
@@ -18,10 +17,10 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'ejs')
 
 app.get('/', function(request, response) {
-  response.render('pages/index');
+  response.render('pages/accueil_projet');
 })
 
-app.get('/db/:id', function (request, response) {
+app.post('/db/:id', function (request, response) {
   var id = request.params.id
   var sql = ` SELECT id, test_text
               FROM test
@@ -34,6 +33,23 @@ app.get('/db/:id', function (request, response) {
         response.send("Error " + err)
       } else { 
         response.render('pages/db', {results: result.rows} )
+      }
+      })
+   })
+})
+
+app.post('/db', function (request, response) {
+  var id = request.params.id
+  var sql = ` SELECT id, test_text
+              FROM test`
+
+  pool.connect(function(err, client, done) {
+    client.query(sql, [id], function(err, result) {
+      done()
+      if (err) { console.error(err)
+        response.send("Error " + err)
+      } else { 
+        response.send(result)
       }
       })
    })
