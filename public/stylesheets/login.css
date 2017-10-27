@@ -1,0 +1,35 @@
+body {
+    background-color: #efeeec;
+    color: #4b524b;
+    border-color: #4b524b;
+}
+
+label {
+    display: inline-block;
+    width: 150px;
+    margin-left: 10px;
+}
+
+input {
+    margin: 10px;
+    font-size: 0.8em;
+    height: 30px;
+    margin-right: 50px;
+}
+
+#login-form {
+    position: absolute;
+    right: 3px;
+    border: 3px solid;
+    font-size: 1.5em;
+    padding: 10px;
+}
+
+#submit-button {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    bottom: 20px;
+    width: 40px;
+    background-color: #89d199;
+}

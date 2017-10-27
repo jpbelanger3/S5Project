@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/login.css"/>
+    <link rel="stylesheet" type="text/css" href="/dependencies/font-awesome-4.7.0/css/font-awesome.min.css"/>
+    <meta charset="utf-8"/>
+    <title>Hypo</title>
+</head>
+<body>
+    <div id="login-form">
+        <label for="username-input">Username :</label>
+        <input type="text" id="username-input">
+        <br>
+        <label for="password-input">Password :</label>
+        <input type="password" id="password-input">
+        <button id="submit-button" class="fa fa-angle-double-right" onclick="login()"></button>
+        <div id="error-field" style="display: none; color: red;">
+            *** Wrong credentials ***
+        </div>
+    </div>
+</body>
+
+<script src="/dependencies/jquery-3.2.1.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var loginInfoItem = localStorage.getItem('login-info')
+        if (loginInfoItem) {
+            var loginInfo = JSON.parse(loginInfoItem)
+            loginRequest(loginInfo.username, loginInfo.password)
+        }
+    })
+
+    function login() {
+        var username = document.getElementById("username-input").value
+        var password = document.getElementById("password-input").value
+
+        if (username.length > 0 && password.length > 0) {
+            loginRequest(username, password)
+        }
+    }
+
+    function loginRequest(username, password) {
+        $.ajax({
+            type: 'POST',
+            url: '/login',
+            data: {
+                username: username,
+                password: password,
+            },
+            success: (result) => {
+                if (!result) {
+                    localStorage.removeItem('login-info')
+                    $('#error-field').show()
+                } else {
+                    localStorage.setItem('login-info', JSON.stringify({ username: username, password: password }))
+                    $('html').html(result)
+                }
+            }
+        })
+    }
+</script>

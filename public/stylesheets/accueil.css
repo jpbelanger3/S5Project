@@ -191,15 +191,3 @@ section{
     max-width: 640px;
     overflow: auto;
 }
-
-/*<script>
-function menu_click_selection(elmt, get_elmt)
-{
-    if(elmt != document.getElementById(get_elmt))
-            {
-                $(elmt).css('opacity', '1');
-                elmt = document.getElementById(get_elmt);
-                $(get_elmt).css('opacity', '0.5');
-            }
-}
-</script>*/

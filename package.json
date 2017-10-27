@@ -8,7 +8,7 @@
   "main": "s5-project.js",
   "scripts": {
     "start": "node s5-project.js",
-    "dev-server": "nodemon --ignore public/ --ignore client/ --ignore uploads/ s5-project.js 8080",
+    "dev-server": "nodemon --ignore public/ --ignore client/ --ignore uploads/ s5-project.js",
     "test": "node test.js"
   },
   "dependencies": {
