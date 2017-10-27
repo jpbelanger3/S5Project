@@ -7,11 +7,17 @@ var pg = require('pg')
 var devDATABASE_URL = "postgres://postgres:O8bSkVesnUfi@localhost:5432/s5-project"
 var connectionObject = ConnectionStringParser((process.env.DATABASE_URL || devDATABASE_URL))
 var pool = new pg.Pool(connectionObject)
+var session = require('express-session');
 var dao = require('./dao')
 
 app.use( bodyParser.json() )
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', (process.env.PORT || 8081))
+app.use(session({
+  secret: 'Shhh!',
+  resave: true,
+  saveUninitialized: true,
+}))
 
 app.use(express.static(__dirname + '/public'))
 
@@ -31,9 +37,10 @@ app.post('/login', function (request, response) {
   pool.connect(function(err, client, done) {
     dao.getPassword(client, username)
     .then((result) => {
+      done()
       if (result.rows.length > 0 && result.rows[0].password === hash) {
-        done()
-        response.render('pages/accueil_projet')
+        request.session.user = result.rows[0]
+        response.send(true)
       } else {
         response.send(false)
       }
@@ -42,6 +49,14 @@ app.post('/login', function (request, response) {
 })
 
 app.get('/', function(request, response) {
+  if (request.session && request.session.user) {
+    response.render('pages/accueil_projet')
+  } else {
+    response.redirect('/login')
+  }
+})
+
+app.get('/login', function(request, response) {
     response.render('pages/login')
 })
 

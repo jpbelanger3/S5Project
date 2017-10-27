@@ -22,14 +22,6 @@
 <script src="/dependencies/jquery-3.2.1.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        var loginInfoItem = localStorage.getItem('login-info')
-        if (loginInfoItem) {
-            var loginInfo = JSON.parse(loginInfoItem)
-            loginRequest(loginInfo.username, loginInfo.password)
-        }
-    })
-
     function login() {
         var username = document.getElementById("username-input").value
         var password = document.getElementById("password-input").value
@@ -49,11 +41,9 @@
             },
             success: (result) => {
                 if (!result) {
-                    localStorage.removeItem('login-info')
                     $('#error-field').show()
                 } else {
-                    localStorage.setItem('login-info', JSON.stringify({ username: username, password: password }))
-                    $('html').html(result)
+                    window.location.href = '../'
                 }
             }
         })
