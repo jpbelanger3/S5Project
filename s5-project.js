@@ -39,7 +39,7 @@ app.get('/', async function(request, response) {
   if (request.session && request.session.user) {
     var cid = request.session.user.id
     var results = {}
-    var lastSelectedModule
+    var lastSelectedModule = {}
 
     var client = await pool.connect()
     var modules = await dao.getModuleListing(client, cid)
