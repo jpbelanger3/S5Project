@@ -32,8 +32,6 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'ejs')
 
 
-
-
 // Function to render main page
 app.get('/', async function(request, response) {
   if (request.session && request.session.user) {
@@ -119,6 +117,40 @@ app.post('/db', function (request, response) {
       }
       })
    })
+})
+
+
+/**********************/
+/******** Mbed ********/
+/**********************/
+
+app.get('/module/:id/config', async function(request, response) {
+  var mid = request.params.id
+
+  var client = await pool.connect()
+  var result = await dao.getModuleConfig(client, mid)
+  var config = result.rows[0]
+  await dao.cleanConfig(client, config.id)
+  client.release()
+
+  response.send(config)
+})
+
+app.post('/module/:id/reading', async function(request, response) {
+  var mid = request.params.id
+  var timestamp = request.body.timestamp ? new Date(request.body.timestamp * 1000) : new Date()
+  var temperature = parseFloat(request.body.temperature) || null 
+  var ph = parseFloat(request.body.ph) || null
+  var ec = parseFloat(request.body.ec) || null
+
+  var client = await pool.connect()
+  var readingResult = await dao.insertReading(client, mid, timestamp, temperature, ph, ec)
+  await dao.updateLastReadingId(client, mid, readingResult.rows[0].id)
+  var result = await dao.isConfigDirty(client, mid)
+  client.release()
+
+  var needConfigUpdate = result.rows[0].is_dirty
+  response.send(needConfigUpdate)
 })
 
 app.listen(app.get('port'), function() {
