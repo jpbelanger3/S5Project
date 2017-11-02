@@ -22,6 +22,14 @@
 <script src="/dependencies/jquery-3.2.1.min.js"></script>
 
 <script>
+    $(document).ready(() => {
+        $(document).on('keypress', (evt) => {
+            if (evt.keyCode == 0xD) {
+                login()
+            }
+        })
+    })
+
     function login() {
         var username = document.getElementById("username-input").value
         var password = document.getElementById("password-input").value
@@ -43,6 +51,7 @@
                 if (!result) {
                     $('#error-field').show()
                 } else {
+                    $(document).off('keypress')
                     window.location.href = '../'
                 }
             }

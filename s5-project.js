@@ -1,3 +1,4 @@
+// Server Initialisation
 var express = require('express')
 var crypto = require('crypto')
 var bodyParser = require('body-parser')
@@ -17,6 +18,7 @@ app.use(session({
   secret: 'Shhh!',
   resave: true,
   saveUninitialized: true,
+  cookie: { maxAge: 999999999999999 }
 }))
 
 app.use(express.static(__dirname + '/public'))
@@ -25,41 +27,81 @@ const secret = 'admin1'
 const hash = crypto.createHmac('sha256', secret).update('s5-project').digest('hex')
 console.log('password: '+ secret + '| hash: '+ hash)
 
-// views is directory for all template files
+
 app.set('views', __dirname + '/views')
 app.set('view engine', 'ejs')
 
-app.post('/login', function (request, response) {
-  var username = request.body.username
-  var password = request.body.password.toString()
-  var hash = crypto.createHmac('sha256', password).update('s5-project').digest('hex')
 
-  pool.connect(function(err, client, done) {
-    dao.getPassword(client, username)
-    .then((result) => {
-      done()
-      if (result.rows.length > 0 && result.rows[0].password === hash) {
-        request.session.user = result.rows[0]
-        response.send(true)
-      } else {
-        response.send(false)
-      }
-    })
-  })
-})
-
-app.get('/', function(request, response) {
+// Function to render main page
+app.get('/', async function(request, response) {
   if (request.session && request.session.user) {
-    response.render('pages/accueil_projet')
+    var cid = request.session.user.id
+    var results = {}
+    var lastSelectedModule = {}
+
+    var client = await pool.connect()
+    var modules = await dao.getModuleListing(client, cid)
+    if (modules.rows.length > 0) {
+      lastSelectedModule = modules.rows.filter((mod) => { return mod.is_last_selected })[0] || modules.rows[0]
+    } else {
+      lastSelectedModule.id = 0
+    }
+    
+    client.release()
+    results.modules = modules.rows
+    results.selectedModuleId = lastSelectedModule.id || null
+    response.render('pages/accueil_projet', results )
+    
   } else {
     response.redirect('/login')
   }
 })
 
+// Get login page
 app.get('/login', function(request, response) {
     response.render('pages/login')
 })
 
+// User login
+app.post('/login', async function (request, response) {
+  var username = request.body.username
+  var password = request.body.password.toString()
+  var hash = crypto.createHmac('sha256', password).update('s5-project').digest('hex')
+
+  var client = await pool.connect()
+  var result = await dao.getPassword(client, username)
+  client.release()
+
+  if (result.rows.length > 0 && result.rows[0].password === hash) {
+    request.session.user = result.rows[0]
+    response.send(true)
+  } else {
+    response.send(false)
+  }
+})
+
+// User logout
+app.post('/logout', function(request,response) {
+  if (request.session && request.session.user) {
+    request.session.user = undefined
+    response.send(true)
+  }
+})
+
+// Switch module
+app.put('/module/switch/:id', async function(request, response) {
+  var cid = request.session.user.id
+  var moduleId = request.params.id
+
+  var client = await pool.connect()
+  await dao.resetSelectedModule(client, cid)
+  await dao.selectModule(client, cid, moduleId)
+  client.release()
+
+  response.send(true)
+})
+
+// Test
 app.post('/db', function (request, response) {
   var id = request.params.id
   var sql = ` SELECT id, test_text
@@ -75,6 +117,40 @@ app.post('/db', function (request, response) {
       }
       })
    })
+})
+
+
+/**********************/
+/******** Mbed ********/
+/**********************/
+
+app.get('/module/:id/config', async function(request, response) {
+  var mid = request.params.id
+
+  var client = await pool.connect()
+  var result = await dao.getModuleConfig(client, mid)
+  var config = result.rows[0]
+  await dao.cleanConfig(client, config.id)
+  client.release()
+
+  response.send(config)
+})
+
+app.post('/module/:id/reading', async function(request, response) {
+  var mid = request.params.id
+  var timestamp = request.body.timestamp ? new Date(request.body.timestamp * 1000) : new Date()
+  var temperature = parseFloat(request.body.temperature) || null 
+  var ph = parseFloat(request.body.ph) || null
+  var ec = parseFloat(request.body.ec) || null
+
+  var client = await pool.connect()
+  var readingResult = await dao.insertReading(client, mid, timestamp, temperature, ph, ec)
+  await dao.updateLastReadingId(client, mid, readingResult.rows[0].id)
+  var result = await dao.isConfigDirty(client, mid)
+  client.release()
+
+  var needConfigUpdate = result.rows[0].is_dirty
+  response.send(needConfigUpdate)
 })
 
 app.listen(app.get('port'), function() {

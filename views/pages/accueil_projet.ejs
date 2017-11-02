@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="/stylesheets/accueil.css"/>
+        <link rel="stylesheet" type="text/css" href="/dependencies/font-awesome-4.7.0/css/font-awesome.min.css"/>
         <meta charset="utf-8"/>
         <title>Hypo</title>
     </head>
@@ -9,6 +10,17 @@
         <div id="global">
             <header>
             </header>
+            <div id="session-context">
+                <label for="module-list">Module: </label>
+                <select id="module" onchange="moduleSwitch(this.value)">
+                    <% modules.forEach((module) => { %>
+                        <option value= <%= module.id %> <%= module.id === selectedModuleId? 'selected' : '' %> >
+                            <%= module.name %>
+                        </option>
+                    <% }) %>
+                </select>
+                <button id="logout-button" class="fa fa-sign-out" onClick="logout()"></button>
+            </div>
             <div id="first_split">
                 <!--Menu Vertical Gauche-->
                 <nav>
@@ -227,18 +239,40 @@
         </script>
         <script>
             (function(ns) {
-                var lastSelected
+                var lastSelectedMenu
 
                 function menuSwitch(selectedElem) {
-                    $(lastSelected).removeClass('selected')
+                    $(lastSelectedMenu).removeClass('selected')
                     if (!($(selectedElem).hasClass('sub-menu'))) {
                         $(selectedElem).addClass('selected')
                     }
                     
-                    lastSelected = selectedElem
+                    lastSelectedMenu = selectedElem
                 }
 
+                function moduleSwitch(moduleId) {
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/module/switch/' + moduleId,
+                        success: () => {
+                            window.location.href = '/'
+                        }
+                    })
+                }
+
+                function logout() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/logout',
+                        success: () => {
+                            window.location.href = '/'
+                        }
+                    })
+                }
+
+                ns.logout = logout
                 ns.menuSwitch = menuSwitch
+                ns.moduleSwitch = moduleSwitch
             }(window))
         </script>
     </body>    

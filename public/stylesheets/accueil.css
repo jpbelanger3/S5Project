@@ -3,10 +3,12 @@
 }*/
 
 body{
-    border-color:blue;
     height:100%;
     width:100%;
     margin: 0px;
+    color: #4b524b;
+    border-color: #4b524b;
+    background-color: #efeeec
 }
 
 #global{
@@ -192,3 +194,22 @@ section{
     overflow: auto;
 }
 
+<<<<<<< HEAD
+=======
+#session-context {
+    position: absolute;
+    right: 0;
+    border-left: 3px solid;
+    border-bottom: 3px solid;
+    font-size: 1.5em;
+    padding: 10px;
+}
+
+#session-context select {
+    font-size:0.9em;
+    margin: 10px;
+    width: 200px;
+    padding-left: 6px;
+}
+
+>>>>>>> e81220a98728ee33d72e257149d20e6d2f97e707

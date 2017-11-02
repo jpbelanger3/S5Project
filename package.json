@@ -3,7 +3,7 @@
   "version": "0.2.6",
   "description": "s5-project",
   "engines": {
-    "node": "6.11.1"
+    "node": "8.8.1"
   },
   "main": "s5-project.js",
   "scripts": {
