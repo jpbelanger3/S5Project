@@ -1,4 +1,4 @@
-/*body, #global, #first_split, header, nav, section, #menu, .image1, .image2, section, .section1_div, .label_deroulant, #choix_utilisateur, .button, #profil, .param_value, #fert_range, label, #param_div, .param_div{
+/*body, #global, #first_split, header, nav, section, #menu, .image1, .image2, section, ., .label_deroulant, #choix_utilisateur, .button, #profil, .param_value, #fert_range, label, #param_div, .param_div{
     border: solid;
 }*/
 
@@ -106,6 +106,10 @@ section{
     flex-direction: column;
 }
 
+#page_settings{
+    padding: 80px 0px 0px 0px;
+}
+
 .section1_div{
     border-color: red;
     margin: 15px 0px 0px 0px;
@@ -116,6 +120,7 @@ section{
 }
 
 #button1_div input{
+    /*border-color: yellowgreen;*/
     margin: 0px 20px 20px 0px;
     height: 30px;
     width: 100px;
@@ -130,11 +135,12 @@ section{
 }
 
 #profil{
+    /*border-color: blue;*/
     height: 30px;
     width: 350px;
 }
 
-#temperature{
+#temperature, #ph{
     border-color: red;
     display: flex;
 }
@@ -184,19 +190,7 @@ section{
     padding: 0px;
 }
 
-#photo_split{
-    border-color: pink;
-    display: flex;
-    justify-content: space-around;
-}
-
-#left_block{
-    max-height: 640px;
-    max-width: 640px;
-    overflow: auto;
-}
-
-/*session, #sensor_values_table, #top_table, .table_line, #table_line, .sensor_values, #sensor_value, .sensor_values span, #sensor_value span, .icone_representation, #icone_representation, #picture_home{
+/*#section2, #sensor_values_table, #top_table, .table_line, #table_line, .sensor_values, #sensor_value, .sensor_values span, #sensor_value span, .icone_representation, #icone_representation, #picture_home{
     border: solid;
 }*/
 
@@ -204,14 +198,15 @@ section{
 
 #section2{
     border-color: rgb(0, 255, 255);
+    margin: 80px 0px 0px 0px;
     display: flex;
     flex-direction: initial;
 }
 
 #sensor_values_table{
     border-color: blue;
-    width: 304px;
-    margin: 75px 0px 75px 175px;
+    width: 350px;
+    margin: 30px 0px 75px 175px;
     display: flex;
 }
 
@@ -238,6 +233,7 @@ section{
 }
 
 #sensor_value label{
+    border-color: pink;
     width: 250px;
 }
 
@@ -248,7 +244,7 @@ section{
 .icone_representation{
     border-color: red;
     height: 30px;
-    width: 70px;
+    width: 58px;
     margin: 0px 0px 0px 20px;
     align-self: flex-end; /* on aligne l'élément sur le bord inférieur du conteneur */
 }
@@ -271,17 +267,56 @@ section{
 }
 
 #fertilisant_span{
-    background-image: linear-gradient(to right, rgb(85, 233, 85) 70%, white 0%);
+    background-image: linear-gradient(to right, rgb(85, 233, 85) 70%, #efeeec 0%);
 }
 
 #picture_home{
     border-color: green;
     width: 620px;
     height: 620px;
-    margin: 35px 0px 75px 175px;
+    margin: 0px 0px 75px 175px;
 }
 
 /* Fin page home */
+
+/* Début page picture */
+
+/*#page_picture, #section3, #photo_split, #left_block{
+    border: solid;
+}*/
+
+#page_picture{
+    border-color: green;
+}
+
+#section7{
+    border-color: blue;
+    margin: 80px 0px 0px 0px;
+}
+
+#photo_split{
+    border-color: pink;
+    display: flex;
+    justify-content: space-around;
+}
+
+#left_block{
+    border-color: purple;
+    max-height: 620px;
+    max-width: 640px;
+    overflow: auto;
+}
+/* Fin page picture */
+
+.WIP{
+    border-color: red;
+    height: 720px;
+    width: 1375px;
+    font-size: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 #session-context {
     position: absolute;

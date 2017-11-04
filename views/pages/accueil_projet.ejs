@@ -37,108 +37,6 @@
             </nav>
             <!-- Fin Menu Vertical Gauche-->
 
-            <!-- Début page 'Settings' -->
-            <div id="page_settings" class="page_begins">
-                <section>
-                    <div id="choix_utilisateur">
-                        <div id="button1_div">
-                            <input type="button" value="Importer"/>
-                            <input type="button" value="Création"/>
-                            <input type="button" value="Sauvegarder"/>
-                        </div>
-                        <div id="liste_deroulante">
-                            <form method="post" action="???">
-                                <select name="profil" id="profil">
-                                    <option value="profil1">Mon Profil</option>
-                                    <option value="profil2">Mon Autre Profil</option>
-                                </select>
-                            </form>
-                        </div>
-                    </div>
-
-                    <label class="label_deroulant" id="temp_action">Température</label>
-                    <div class="section1_div" id="temperature">
-                        <div class="param_div">
-                            <label>Min (°C)</label>
-                            <span class="param_value">18.3</span>
-                        </div>
-                        <div class="param_div">
-                            <label>Max (°C)</label>
-                            <span class="param_value">26</span>
-                        </div>
-                    </div>
-
-                    <label class="label_deroulant" id="ph_action">PH</label>
-                    <div class="section1_div" id="ph">
-                        
-                    </div>
-
-                    <label class="label_deroulant" id="fert_action">Fertilisant</label>
-                    <div class="section1_div" id="fertilisant">
-                        <div class="param_div">
-                            <label>EC (mS/cm)</label>
-                        </div>
-                        <div id="param_div">
-                            <form>
-                                <output class="param_value" id="range_value" name="resultat"></output>
-                                <input id="fert_range" type="range" name="d" list="tickmarks" min="0" max="100" step="0.5" oninput="resultat.value=parseInt(d.value)"/>
-                            </form>  
-
-                            <datalist id="tickmarks">
-                                <option value="0" label="0">
-                                <option value="10">
-                                <option value="20">
-                                <option value="30">
-                                <option value="40">
-                                <option value="50" label="50">
-                                <option value="60">
-                                <option value="70">
-                                <option value="80">
-                                <option value="90">
-                                <option value="100" label="100">
-                            </datalist>
-                        </div>
-                    </div>
-
-                    <label class="label_deroulant" id="ecla_action">Eclairage</label>
-                    <div class="section1_div" id="eclairage">
-                            
-                    </div>
-
-                    <label class="label_deroulant" id="phot_action">Photo</label>
-                    <div class="section1_div" id="photo">
-                        <div id="photo_split">
-                            <div id="left_block">
-                                <div class="left_pics">
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                </div>
-                                <div class="left_pics">
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                </div>
-                                <div class="left_pic">
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                    <img class="plant_picture" src="/images/NO_ID.png"/>
-                                </div>
-                                <div class="left_pic">
-                                        <img class="plant_picture" src="/images/NO_ID.png"/>
-                                        <img class="plant_picture" src="/images/NO_ID.png"/>
-                                        <img class="plant_picture" src="/images/NO_ID.png"/>
-                                    </div>
-                            </div>                            
-                            <div id="right_pic">
-                                <img class="plant_picture" src="/images/NO_ID_BIG.png"/>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <!-- Fin page 'Settings'-->
-            
             <!-- Début page 'Home'-->
             <div id="page_home" class="page_begins">
                 <section id="section2">
@@ -178,6 +76,183 @@
                 </section>
             </div>
             <!-- Fin page 'Home' -->
+
+            <!-- Début page 'Settings' -->
+            <div id="page_settings" class="page_begins">
+                <section id="section1">
+                    <div id="choix_utilisateur">
+                        <div id="button1_div">
+                            <input type="button" value="Importer"/>
+                            <input type="button" value="Création"/>
+                            <input type="button" value="Sauvegarder"/>
+                        </div>
+                        <div id="liste_deroulante">
+                            <form method="post" action="???">
+                                <select name="profil" id="profil">
+                                    <option value="profil1">Mon Profil</option>
+                                    <option value="profil2">Mon Autre Profil</option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+
+                    <label class="label_deroulant" id="temp_action">Température</label>
+                    <div class="section1_div" id="temperature">
+                        <div class="param_div">
+                            <label>Min (°C)</label>
+                            <span class="param_value">18.3</span>
+                        </div>
+                        <div class="param_div">
+                            <label>Max (°C)</label>
+                            <span class="param_value">26</span>
+                        </div>
+                    </div>
+
+                    <label class="label_deroulant" id="ph_action">PH</label>
+                    <div class="section1_div" id="ph">
+                        <div class="param_div">
+                            <label>Min</label>
+                            <span class="param_value">0</span>
+                        </div>
+                        <div class="param_div">
+                            <label>Max</label>
+                            <span class="param_value">15</span>
+                        </div>
+                    </div>
+
+                    <label class="label_deroulant" id="fert_action">Fertilisant</label>
+                    <div class="section1_div" id="fertilisant">
+                        <div class="param_div">
+                            <label>EC (mS/cm)</label>
+                        </div>
+                        <div id="param_div">
+                            <form>
+                                <output class="param_value" id="range_value" name="resultat"></output>
+                                <input id="fert_range" type="range" name="d" list="tickmarks" min="0" max="100" step="0.5" oninput="resultat.value=parseInt(d.value)"/>
+                            </form>  
+
+                            <datalist id="tickmarks">
+                                <option value="0" label="0">
+                                <option value="10">
+                                <option value="20">
+                                <option value="30">
+                                <option value="40">
+                                <option value="50" label="50">
+                                <option value="60">
+                                <option value="70">
+                                <option value="80">
+                                <option value="90">
+                                <option value="100" label="100">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <label id="ecla_action" class="label_deroulant">Eclairage</label>
+                    <div id="eclairage" class="section1_div">
+                        <div class="param_div">
+                            <label>LX (cd.sr.m<sub>-2</sub>)</label>
+                        </div>
+                        <div id="param_div">
+                            <form>
+                                <output class="param_value" id="range_value" name="resultat"></output>
+                                <input id="fert_range" type="range" name="d" list="tickmarks" min="0" max="100" step="0.5" oninput="resultat.value=parseInt(d.value)"/>
+                            </form>  
+
+                            <datalist id="tickmarks">
+                                <option value="0" label="0">
+                                <option value="10">
+                                <option value="20">
+                                <option value="30">
+                                <option value="40">
+                                <option value="50" label="50">
+                                <option value="60">
+                                <option value="70">
+                                <option value="80">
+                                <option value="90">
+                                <option value="100" label="100">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <label id="phot_action" class="label_deroulant">Photo</label>
+                    <div class="section1_div" id="photo">
+                        <div class="param_div">
+                            <label>Photo (par jour)</label>
+                            <span class="param_value">0</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- Fin page 'Settings'-->
+
+            <!-- Début page temperature graphics -->
+            <div id="page_temp_graph" class="page_begins">
+                <section id="section4">
+                    <div class="WIP">Work In Progress</div>
+                </section>
+            </div>
+            <!-- Fin page temperature graphics -->
+
+            <!-- Début page ph graphics -->
+            <div id="page_ph_graph" class="page_begins">
+                <section id="section5">
+                    <div class="WIP">Work In Progress</div>
+                </section>
+            </div>
+            <!-- Fin page ph graphics -->
+
+            <!-- Début page fertilisant graphics -->
+            <div id="page_fert_graph" class="page_begins">
+                <section id="section6">
+                    <div class="WIP">Work In Progress</div>
+                </section>
+            </div>
+            <!-- Fin page fertilisant graphics -->
+
+            <!-- Début page 'Pictures' -->
+            <div id="page_picture" class="page_begins">
+                <section id="section7">
+                    <div class="section1_div" id="photo">
+                        <div id="photo_split">
+                            <div id="left_block">
+                                <div class="left_pics">
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                </div>
+                                <div class="left_pics">
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                </div>
+                                <div class="left_pic">
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                </div>
+                                <div class="left_pic">
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                    <img class="plant_picture" src="/images/NO_ID.png"/>
+                                </div>
+                            </div>                            
+                            <div id="right_pic">
+                                <img class="plant_picture" src="/images/NO_ID_BIG.png"/>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>  
+            <!-- Fin page 'Pictures' -->
+
+            <!-- Début page Forum -->
+            <div id="page_forum" class="page_begins">
+                <section id="section8">
+                    <div class="WIP">Work In Progress</div>
+                </section>
+            </div>
+            <!-- Fin page Forum -->
+
             <footer>
 
             </footer>
@@ -188,22 +263,22 @@
 <!-- script pour mettre à jour la valeur actuelle de l'input range dans un output-->
         <script>
             $(function() {
-                $('#fert_range').next().text('--') // Valeur par défaut
+                $('#fert_range').next().text('--'); // Valeur par défaut
                 $('#fert_range').on('input', function() {
-                    var $set = $(this).val()
-                    $(this).next().text($set)
-                })
-            })
+                    var $set = $(this).val();
+                    $(this).next().text($set);
+                });
+            });
         </script>
         
 <!-- script pour cacher/afficher le sous menu de l'icone n°3 -->
         <script type="text/javascript">
             jQuery(document).ready(function($){
-                $("#subMenu").hide()
+                $("#subMenu").hide();
                 $("#click_action").on("click", function(){
-                    $("#subMenu").toggle("fast")
-                })
-            })
+                    $("#subMenu").toggle("fast");
+                });
+            });
         </script>
         
 <!-- script pour cacher/afficher les informations de la page "settings" -->
@@ -236,17 +311,36 @@
 <!-- script pour cacher/afficher les différentes pages (à améliorer mais utile pour voir ce que ça donne) -->
         <script type="text/javascript">
             jQuery(document).ready(function($){
-                $("#page_home").hide()
-                $("#page_settings").hide()
+                $(".page_begins").hide()
                 
                 $("#pic1").on("click", function(){
+                    $(".page_begins").hide()
                     $("#page_home").show(0)
-                    $("#page_settings").hide()
                 })
                 $("#pic2").on("click", function(){
+                    $(".page_begins").hide()
                     $("#page_settings").show(0)
-                    $("#page_home").hide()
+                }) 
+                $("#pic4").on("click", function(){
+                    $(".page_begins").hide()
+                    $("#page_temp_graph").show(0)
                 })
+                $("#pic5").on("click", function(){
+                    $(".page_begins").hide()
+                    $("#page_ph_graph").show(0)
+                })
+                $("#pic6").on("click", function(){
+                    $(".page_begins").hide()
+                    $("#page_fert_graph").show(0)
+                })
+                $("#pic7").on("click", function(){
+                    $(".page_begins").hide()
+                    $("#page_picture").show(0)
+                })
+                $("#pic8").on("click", function(){
+                    $(".page_begins").hide()
+                    $("#page_forum").show(0)
+                }) 
             })
         </script>
 
