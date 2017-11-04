@@ -15,7 +15,7 @@ body{
     border-color:red;
 }
 
-#first_split{
+.page_begins{
     border-color:purple;
     display: flex;
 }
@@ -28,9 +28,12 @@ nav{
     border-right: solid;
     border-color:black;
     height: 100%;
-    /*border-color:green;*/
     padding-left: -30px;
     position: fixed;
+}
+
+.label_deroulant, .sensor_values label, #sensor_value label{
+    font-size: 1.2em;
 }
 
 #pic1{ background:url("../images/accueil.png") no-repeat;}
@@ -41,15 +44,16 @@ nav{
 #pic6{ background:url("../images/image_projet.png") no-repeat;}
 #pic7{ background:url("../images/photo.png") no-repeat;}
 #pic8{ background:url("../images/forum.png") no-repeat;}
+#picture_home{ background:url("../images/NO_ID_BIG.png") no-repeat;}
 
-#pic1, #pic2, #click_action, #pic4, #pic5, #pic6, #pic7, #pic8{
+#pic1, #pic2, #click_action, #pic4, #pic5, #pic6, #pic7, #pic8, #picture_home{
     background-position: center center;
 }
 
-section{
-    border-color:Grey;
-    padding-left: 108px;
-}
+#icone_representation1{ background:url("../images/fleche_up.png") no-repeat;}
+#icone_representation2{ background:url("../images/fleche_middle.png") no-repeat;}
+#icone_representation3{ background:url("../images/fleche_down.png") no-repeat;}
+#icone_representation4{ background:url("../images/fleche_up.png") no-repeat;}
 
 #menu{
     border-color: rgb(205, 133, 50);
@@ -59,7 +63,7 @@ section{
     padding: 0px;
 }
 
-.image1 {
+.image1{
     border: 3px solid black;
     border-radius: 15px;
     height: 85px;
@@ -93,7 +97,8 @@ section{
 }
 
 section{
-    border-color: blue;
+    border-color:Grey;
+    padding-left: 108px;
     margin: 20px;
     height: 100%;
     width: 100%;
@@ -111,7 +116,6 @@ section{
 }
 
 #button1_div input{
-    /*border-color: yellowgreen;*/
     margin: 0px 20px 20px 0px;
     height: 30px;
     width: 100px;
@@ -121,13 +125,11 @@ section{
     border-bottom: solid;
     border-color: rgb(175, 175, 175);
     border-width: 2px;
-    font-size: 1.2em;
     color: rgb(175, 175, 175);
     margin: 15px 0px 0px 0px;
 }
 
 #profil{
-    /*border-color: blue;*/
     height: 30px;
     width: 350px;
 }
@@ -194,8 +196,93 @@ section{
     overflow: auto;
 }
 
-<<<<<<< HEAD
-=======
+/*session, #sensor_values_table, #top_table, .table_line, #table_line, .sensor_values, #sensor_value, .sensor_values span, #sensor_value span, .icone_representation, #icone_representation, #picture_home{
+    border: solid;
+}*/
+
+/*page home*/
+
+#section2{
+    border-color: rgb(0, 255, 255);
+    display: flex;
+    flex-direction: initial;
+}
+
+#sensor_values_table{
+    border-color: blue;
+    width: 304px;
+    margin: 75px 0px 75px 175px;
+    display: flex;
+}
+
+#top_table{
+    border-color: green;
+}
+
+.table_line{
+    border-color: purple;
+    margin: 0px 0px 100px 0px;
+    display: flex;
+}
+
+#table_line{
+    border-color: purple;
+    display: flex;
+    flex-direction: column;
+}
+
+.sensor_values, #sensor_value{
+    border-color: orange;
+    display: flex;
+    flex-direction: column;
+}
+
+#sensor_value label{
+    width: 250px;
+}
+
+#sensor_value span, .sensor_values span{
+    border: solid;
+}
+
+.icone_representation{
+    border-color: red;
+    height: 30px;
+    width: 70px;
+    margin: 0px 0px 0px 20px;
+    align-self: flex-end; /* on aligne l'élément sur le bord inférieur du conteneur */
+}
+
+#icone_representation4{
+    border-color: red;
+    height: 30px;
+    width: 70px;
+    margin: 0px 0px 0px 20px;
+}
+
+.sensor_values span, #sensor_value span{
+    height: 30px;
+    width: 250px;
+    font-size: 1.5em;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#fertilisant_span{
+    background-image: linear-gradient(to right, rgb(85, 233, 85) 70%, white 0%);
+}
+
+#picture_home{
+    border-color: green;
+    width: 620px;
+    height: 620px;
+    margin: 35px 0px 75px 175px;
+}
+
+/* Fin page home */
+
 #session-context {
     position: absolute;
     right: 0;
@@ -211,5 +298,3 @@ section{
     width: 200px;
     padding-left: 6px;
 }
-
->>>>>>> e81220a98728ee33d72e257149d20e6d2f97e707

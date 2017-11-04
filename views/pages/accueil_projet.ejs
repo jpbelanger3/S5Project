@@ -8,8 +8,6 @@
     </head>
     <body>
         <div id="global">
-            <header>
-            </header>
             <div id="session-context">
                 <label for="module-list">Module: </label>
                 <select id="module" onchange="moduleSwitch(this.value)">
@@ -21,23 +19,26 @@
                 </select>
                 <button id="logout-button" class="fa fa-sign-out" onClick="logout()"></button>
             </div>
-            <div id="first_split">
-                <!--Menu Vertical Gauche-->
-                <nav>
-                    <ul id="menu">
-                        <li class="image1" id="pic1"><a href="#"></a></li>
-                        <li class="image1" id="pic2"><a href="#"></a></li>
-                        <li class="image1 sub-menu" id="click_action"></a></li>  
-                            <ul id="subMenu">
-                                <li class="image2" id="pic4"><a href="#"></a></li>
-                                <li class="image2" id="pic5"><a href="#"></a></li>
-                                <li class="image2" id="pic6"><a href="#"></a></li>
-                            </ul>
-                        <li class="image1" id="pic7"><a href="#"></a></li>
-                        <li class="image1" id="pic8"><a href="#"></a></li>
-                    </ul> 
-                </nav>
-                <!-- Fin Menu Vertical Gauche-->
+
+            <!--Menu Vertical Gauche-->
+            <nav>
+                <ul id="menu">
+                    <li class="image1" id="pic1"></li>
+                    <li class="image1" id="pic2"></li>
+                    <li class="image1 sub-menu" id="click_action"></li>  
+                        <ul id="subMenu">
+                            <li class="image2" id="pic4"></li>
+                            <li class="image2" id="pic5"></li>
+                            <li class="image2" id="pic6"></li>
+                        </ul>
+                    <li class="image1" id="pic7"></li>
+                    <li class="image1" id="pic8"></li>
+                </ul> 
+            </nav>
+            <!-- Fin Menu Vertical Gauche-->
+
+            <!-- Début page 'Settings' -->
+            <div id="page_settings" class="page_begins">
                 <section>
                     <div id="choix_utilisateur">
                         <div id="button1_div">
@@ -136,95 +137,128 @@
                     </div>
                 </section>
             </div>
-            <div id="second_split">
-                <session>
+            <!-- Fin page 'Settings'-->
+            
+            <!-- Début page 'Home'-->
+            <div id="page_home" class="page_begins">
+                <section id="section2">
                     <div id="sensor_values_table">
                         <div id="top_table">
                             <div class="table_line">
                                 <div class="sensor_values">
                                     <label>Valeur température (°C)</label>
-                                    <span class="span_table_value">22.3</span>
+                                    <span>22.3</span>
                                 </div>
+                                <div id="icone_representation1" class="icone_representation"></div>
                             </div>
                             <div class="table_line">
                                 <div class="sensor_values">
                                     <label>Valeur PH</label>
-                                    <span class="span_table_value">22.3</span>
+                                    <span>22.3</span>
                                 </div>
+                                <div id="icone_representation2" class="icone_representation"></div>
                             </div>
                             <div class="table_line">
                                 <div class="sensor_values">
                                     <label>Niveau de fertilisant</label>
-                                    <span class="span_table_value"></span>
+                                    <span id="fertilisant_span"></span>
                                 </div>
+                                <div id="icone_representation3" class="icone_representation"></div>
                             </div>
-                            <div id="top_table_right">
-
+                            <div id="table_line">
+                                <div id="sensor_value">
+                                    <label>Eclairage</label>
+                                    <span></span>
+                                </div>
+                                <div id="icone_representation4"></div>
                             </div>
                         </div>
                     </div>
-                    <div id="picture">
-                        
-                    </div>
-                </session>
+                    <div id="picture_home"></div>
+                </section>
             </div>
+            <!-- Fin page 'Home' -->
             <footer>
 
             </footer>
         </div>
 
         <script src="/dependencies/jquery-3.2.1.min.js"></script>
+        
+<!-- script pour mettre à jour la valeur actuelle de l'input range dans un output-->
         <script>
             $(function() {
-                $('#fert_range').next().text('--'); // Valeur par défaut
+                $('#fert_range').next().text('--') // Valeur par défaut
                 $('#fert_range').on('input', function() {
-                    var $set = $(this).val();
-                    $(this).next().text($set);
-                });
-            });
+                    var $set = $(this).val()
+                    $(this).next().text($set)
+                })
+            })
         </script>
+        
+<!-- script pour cacher/afficher le sous menu de l'icone n°3 -->
         <script type="text/javascript">
             jQuery(document).ready(function($){
-                $("#subMenu").hide();
+                $("#subMenu").hide()
                 $("#click_action").on("click", function(){
-                    $("#subMenu").toggle("fast");
-                });
-            });
+                    $("#subMenu").toggle("fast")
+                })
+            })
         </script>
+        
+<!-- script pour cacher/afficher les informations de la page "settings" -->
         <script type="text/javascript">
             jQuery(document).ready(function($){
-                $("#temperature").hide();
-                $("#ph").hide();
-                $("#fertilisant").hide();
-                $("#eclairage").hide();
-                $("#photo").hide();
+                $("#temperature").hide()
+                $("#ph").hide()
+                $("#fertilisant").hide()
+                $("#eclairage").hide()
+                $("#photo").hide()
 
                 $("#temp_action").on("click", function(){
-                    $("#temperature").slideToggle("fast");
-                });
+                    $("#temperature").slideToggle("fast")
+                })
                 $("#ph_action").on("click", function(){
-                    $("#ph").slideToggle("fast");
-                });
+                    $("#ph").slideToggle("fast")
+                })
                 $("#fert_action").on("click", function(){
-                    $("#fertilisant").slideToggle("fast");
-                });
+                    $("#fertilisant").slideToggle("fast")
+                })
                 $("#ecla_action").on("click", function(){
-                    $("#eclairage").slideToggle("fast");
-                });
+                    $("#eclairage").slideToggle("fast")
+                })
                 $("#phot_action").on("click", function(){
-                    $("#photo").slideToggle("fast");
-                });
-            });
+                    $("#photo").slideToggle("fast")
+                })
+            })
+        </script>
+        
+<!-- script pour cacher/afficher les différentes pages (à améliorer mais utile pour voir ce que ça donne) -->
+        <script type="text/javascript">
+            jQuery(document).ready(function($){
+                $("#page_home").hide()
+                $("#page_settings").hide()
+                
+                $("#pic1").on("click", function(){
+                    $("#page_home").show(0)
+                    $("#page_settings").hide()
+                })
+                $("#pic2").on("click", function(){
+                    $("#page_settings").show(0)
+                    $("#page_home").hide()
+                })
+            })
         </script>
 
+<!-- -->
         <script>
-            /*document.getElementById("image1").onclick = function(){
-                var id = this.getAttribute('id');
-                document.getElementById('range_value').innerHTML = id;
-            };*/
-            
+            document.getElementById("image1").onclick = function(){
+                var id = this.getAttribute('id')
+                document.getElementById('range_value').innerHTML = id
+            } 
         </script>
 
+<!-- -->
         <script>
             jQuery(document).ready(function($){
                 var elmt;    
@@ -237,6 +271,8 @@
                    
             });
         </script>
+
+<!-- -->
         <script>
             (function(ns) {
                 var lastSelectedMenu
