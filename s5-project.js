@@ -124,10 +124,20 @@ app.post('/db', function (request, response) {
 /******** Mbed ********/
 /**********************/
 
-app.get('/module/:id/config', async function(request, response) {
-  var mid = request.params.id
+app.get('/module/:MAC/config', async function(request, response) {
+  var moduleMac = request.params.MAC
+  var cid = request.query.cid || null
+  var mid
 
   var client = await pool.connect()
+  var midRes = await dao.getModuleId(client, moduleMac)
+  if (midRes.rows.length === 0) {
+    midRes = await dao.createNewModule(client, cid, moduleMac)
+    mid = midRes.rows[0].id
+    await dao.createConfig(client, cid, mid)
+  } else {
+    mid = midRes.rows[0].id
+  }
   var result = await dao.getModuleConfig(client, mid)
   var config = result.rows[0]
   await dao.cleanConfig(client, config.id)
@@ -136,14 +146,16 @@ app.get('/module/:id/config', async function(request, response) {
   response.send(config)
 })
 
-app.post('/module/:id/reading', async function(request, response) {
-  var mid = request.params.id
+app.post('/module/:MAC/reading', async function(request, response) {
+  var moduleMac = request.params.MAC
   var timestamp = request.body.timestamp ? new Date(request.body.timestamp * 1000) : new Date()
   var temperature = parseFloat(request.body.temperature) || null 
   var ph = parseFloat(request.body.ph) || null
   var ec = parseFloat(request.body.ec) || null
 
   var client = await pool.connect()
+  var midRes = await dao.getModuleId(client, moduleMac)
+  var mid = midRes.rows[0].id
   var readingResult = await dao.insertReading(client, mid, timestamp, temperature, ph, ec)
   await dao.updateLastReadingId(client, mid, readingResult.rows[0].id)
   var result = await dao.isConfigDirty(client, mid)
