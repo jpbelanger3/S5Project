@@ -8,7 +8,7 @@ var dao = {
     },
 
     getModuleListing: function(client, cid) {
-        var sql = `SELECT id, name, is_last_selected
+        var sql = `SELECT id, name, is_last_selected, last_reading_id
                     FROM module
                     WHERE cid = $1`
 
@@ -65,8 +65,39 @@ var dao = {
                     WHERE id = $1`
         
         return client.query(sql, [id])
-    }
+    },
 
+    getModuleId: function(client, MAC) {
+        var sql = ` SELECT id
+                    FROM module
+                    WHERE mac = $1`
+
+        return client.query(sql, [MAC])
+    },
+
+    createNewModule: function(client, cid, MAC) {
+        var sql = ` INSERT INTO module (cid, mac, name)
+                    VALUES ($1, $2, '***NEW***')
+                    RETURNING id`
+
+        return client.query(sql, [cid, MAC])
+    },
+
+    createConfig: function(client, cid, mid) {
+        var sql = ` INSERT INTO private_config_profile (cid, mid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval)
+                    VALUES ($1, $2, '***NEW***', 20, 25, 6, 6.5, 2, '08:00:00', '22:00:00', '04:00:00')`
+            
+        return client.query(sql, [cid, mid])
+    },
+
+    getReading: function(client, readingId) {
+        console.log(readingId)
+        var sql = ` SELECT temperature, ph, ec 
+                    FROM reading
+                    WHERE id = $1`
+
+        return client.query(sql, [readingId])
+    }
 }
 
 module.exports = dao

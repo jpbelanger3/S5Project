@@ -45,30 +45,36 @@
                             <div class="table_line">
                                 <div class="sensor_values">
                                     <label>Valeur température (°C)</label>
-                                    <span>22.3</span>
+                                    <span><%= reading ? reading.temperature : 0 %></span>
                                 </div>
-                                <div id="icone_representation1" class="icone_representation"></div>
+                                <!-- <div id="icone_representation1" class="icone_representation"></div> -->
                             </div>
                             <div class="table_line">
                                 <div class="sensor_values">
                                     <label>Valeur PH</label>
-                                    <span>22.3</span>
+                                    <span><%= reading ? reading.ph : 0 %></span>
                                 </div>
-                                <div id="icone_representation2" class="icone_representation"></div>
+                                <!-- <div id="icone_representation2" class="icone_representation"></div> -->
                             </div>
                             <div class="table_line">
                                 <div class="sensor_values">
                                     <label>Niveau de fertilisant</label>
-                                    <span id="fertilisant_span"></span>
+                                    <% var fertRatio = (reading && config) ? (reading.ec/config.ec) * 100 : 0 %>
+                                    <% var fertString = 'background-image: linear-gradient(to right, rgb(85, 233, 85)' + fertRatio + '%, #efeeec 0%);' %>
+                                    <span id="fertilisant_span" style="<%= fertString %>"></span>
                                 </div>
-                                <div id="icone_representation3" class="icone_representation"></div>
+                                <!-- <div id="icone_representation3" class="icone_representation"></div> -->
                             </div>
                             <div id="table_line">
                                 <div id="sensor_value">
                                     <label>Eclairage</label>
-                                    <span></span>
+                                    <% var lightRatio = config ? (new Date('1970-01-01T' + config.light_off + 'Z') - new Date('1970-01-01T' + config.light_on + 'Z'))/8.4e+5 : 0 %>
+                                    <% var lightStart = config ? ((new Date('1970-01-01T' + config.light_on + 'Z') - new Date('1970-01-01T00:00:00Z')) / 8.4e+5) : 0 %>
+                                    <span id="light-bar" style="background-color: black; justify-content: start;">
+                                        <div style="margin-left: <%=lightStart%>%; height: 100%; width: <%=lightRatio%>%; background-color: #efeeec;"></div>
+                                    </span>                                    
                                 </div>
-                                <div id="icone_representation4"></div>
+                                <div id="icone_representation4" style="display: none;"></div>
                             </div>
                         </div>
                     </div>
@@ -332,6 +338,7 @@
         <script type="text/javascript">
             jQuery(document).ready(function($){
                 $(".page_begins").hide()
+                $("#page_home").show()
                 
                 $("#pic1").on("click", function(){
                     $(".page_begins").hide()
@@ -372,9 +379,11 @@
             } 
         </script>
 
-<!-- -->
+<!-- Function initialisant les fonctionnalité de pase au démarrage -->
         <script>
             jQuery(document).ready(function($){
+
+                window.initialize()
                 var elmt;    
                 $(".image1").on("click", function() {
                     window.menuSwitch(this)   
@@ -390,6 +399,14 @@
         <script>
             (function(ns) {
                 var lastSelectedMenu
+
+                // Tout ce qui doit être exécuter à l'affichage
+                function initialize() {
+                    var date = new Date()
+                    var timeRatio = 100 * (date.getHours() * 60 + date.getMinutes()) / (24*60)
+                    $('#icone_representation4').css('margin-left', (timeRatio - 11) + '%')
+                    $('#icone_representation4').show()
+                }
 
                 function menuSwitch(selectedElem) {
                     $(lastSelectedMenu).removeClass('selected')
@@ -423,6 +440,7 @@
                 ns.logout = logout
                 ns.menuSwitch = menuSwitch
                 ns.moduleSwitch = moduleSwitch
+                ns.initialize = initialize
             }(window))
         </script>
     </body>    
