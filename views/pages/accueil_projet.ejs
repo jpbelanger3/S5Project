@@ -74,9 +74,7 @@
                                         <div style="margin-left: <%=lightStart%>%; height: 100%; width: <%=lightRatio%>%; background-color: #efeeec;"></div>
                                     </span>                                    
                                 </div>
-                                <% var date = new Date() %>
-                                <% var timeRatio = 100 * (date.getHours() * 60 + date.getMinutes()) / (24*60) %>
-                                <div id="icone_representation4" style="margin-left: <%=timeRatio-11%>%;"></div>
+                                <div id="icone_representation4" style="display: none;"></div>
                             </div>
                         </div>
                     </div>
@@ -361,9 +359,11 @@
             } 
         </script>
 
-<!-- -->
+<!-- Function initialisant les fonctionnalité de pase au démarrage -->
         <script>
             jQuery(document).ready(function($){
+
+                window.initialize()
                 var elmt;    
                 $(".image1").on("click", function() {
                     window.menuSwitch(this)   
@@ -379,6 +379,14 @@
         <script>
             (function(ns) {
                 var lastSelectedMenu
+
+                // Tout ce qui doit être exécuter à l'affichage
+                function initialize() {
+                    var date = new Date()
+                    var timeRatio = 100 * (date.getHours() * 60 + date.getMinutes()) / (24*60)
+                    $('#icone_representation4').css('margin-left', (timeRatio - 11) + '%')
+                    $('#icone_representation4').show()
+                }
 
                 function menuSwitch(selectedElem) {
                     $(lastSelectedMenu).removeClass('selected')
@@ -412,6 +420,7 @@
                 ns.logout = logout
                 ns.menuSwitch = menuSwitch
                 ns.moduleSwitch = moduleSwitch
+                ns.initialize = initialize
             }(window))
         </script>
     </body>    
