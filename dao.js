@@ -8,7 +8,7 @@ var dao = {
     },
 
     getModuleListing: function(client, cid) {
-        var sql = `SELECT id, name, is_last_selected
+        var sql = `SELECT id, name, is_last_selected, last_reading_id
                     FROM module
                     WHERE cid = $1`
 
@@ -90,6 +90,14 @@ var dao = {
         return client.query(sql, [cid, mid])
     },
 
+    getReading: function(client, readingId) {
+        console.log(readingId)
+        var sql = ` SELECT temperature, ph, ec 
+                    FROM reading
+                    WHERE id = $1`
+
+        return client.query(sql, [readingId])
+    }
 }
 
 module.exports = dao

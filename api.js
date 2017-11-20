@@ -7,11 +7,20 @@ var api = {
         var modules = await dao.getModuleListing(client, cid)
         if (modules.rows.length > 0) {
             lastSelectedModule = modules.rows.filter((mod) => { return mod.is_last_selected })[0] || modules.rows[0]
+            data = await Promise.all([ //execute at same time
+                dao.getReading(client, lastSelectedModule.last_reading_id),
+                dao.getModuleConfig(client, lastSelectedModule.id)
+            ])
+            var reading = data[0].rows[0]
+            var config = data[1].rows[0]
         } else {
             lastSelectedModule.id = 0
         }
+
         results.modules = modules.rows
         results.selectedModuleId = lastSelectedModule.id || null
+        results.reading = reading
+        results.config = config
 
         return results
     },
