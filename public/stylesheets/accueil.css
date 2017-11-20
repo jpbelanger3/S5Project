@@ -179,7 +179,20 @@ section{
     justify-content: center;
 }
 
-#fert_range{
+.param_value input{
+    border: none;
+    height: inherit;
+    width: inherit;
+    background-color: inherit;
+    font-size: 0.85em;
+    text-align: center;
+}
+
+.param_value input:focus{
+    outline: none;
+}
+
+.range{
     border-left: solid;
     border-right: solid;
     border-color: grey;
