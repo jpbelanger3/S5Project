@@ -292,6 +292,14 @@ section{
 
 /* Fin page home */
 
+/* Début pages Graphics */
+
+.page_begins{
+    border-color: red; 
+}
+
+/* Fin pages Graphics */
+
 /* Début page picture */
 
 /*#page_picture, #section3, #photo_split, #left_block{

@@ -214,7 +214,7 @@
             <!-- Début page temperature graphics -->
             <div id="page_temp_graph" class="page_begins">
                 <section id="section4">
-                    <div class="WIP">Work In Progress</div>
+                    <canvas id="temperature_curve" width="800" height="400"></canvas>
                 </section>
             </div>
             <!-- Fin page temperature graphics -->
@@ -222,7 +222,7 @@
             <!-- Début page ph graphics -->
             <div id="page_ph_graph" class="page_begins">
                 <section id="section5">
-                    <div class="WIP">Work In Progress</div>
+                    <canvas id="ph_curve" width="800" height="400"></canvas>
                 </section>
             </div>
             <!-- Fin page ph graphics -->
@@ -230,7 +230,7 @@
             <!-- Début page fertilisant graphics -->
             <div id="page_fert_graph" class="page_begins">
                 <section id="section6">
-                    <div class="WIP">Work In Progress</div>
+                    <canvas id="fertilisant_curve" width="800" height="400"></canvas>
                 </section>
             </div>
             <!-- Fin page fertilisant graphics -->
@@ -285,6 +285,7 @@
         </div>
 
         <script src="/dependencies/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
         
 <!-- script pour mettre à jour la valeur actuelle de l'input range dans un output-->
         <script>
@@ -442,6 +443,125 @@
                 ns.moduleSwitch = moduleSwitch
                 ns.initialize = initialize
             }(window))
+        </script>
+        
+<!-- Graphics begins -->
+        <script>
+            new Chart(document.getElementById("temperature_curve"), {
+                type: 'line',
+                data: {
+                    labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+                    datasets: [{
+                        data: [26,24,25,13,13,17,16,34,27,34,26,26,26,29,28,20,23,15,14,17,36],
+                        label: "Temperature",
+                        borderColor: "#3e95cd",
+                        lineTension: 0,
+                        fill: false
+                    }]
+                },
+                options: {
+                    title: {
+                    display: true,
+                    text: 'Courbe de la temperature (en °C)'
+                    },
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Durée (h)'
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Température (°C)'
+                            },
+                            ticks: {
+                                min: 0,
+                                max: 50
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+        <script>
+            new Chart(document.getElementById("ph_curve"), {
+                type: 'line',
+                data: {
+                    labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+                    datasets: [{
+                        data: [7,8,7,6,7,7,8,8,6,6,7,8,9,8,7,7,7,5,6,9,14],
+                        label: "PH",
+                        borderColor: "#3e95cd",
+                        lineTension: 0,
+                        fill: false
+                    }]
+                },
+                options: {
+                    title: {
+                    display: true,
+                    text: 'Courbe du PH'
+                    },
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Durée (h)'
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'PH'
+                            },
+                            ticks: {
+                                min: 0,
+                                max: 14
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+        <script>
+            new Chart(document.getElementById("fertilisant_curve"), {
+                type: 'line',
+                data: {
+                    labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+                    datasets: [{
+                        data: [100,95,90,87,82,78,74,69,65,60,57,54,49,43,35,23,14,8,0,50,100],
+                        label: "Niveau de fertilisant",
+                        borderColor: "#3e95cd",
+                        lineTension: 0,
+                        fill: false
+                    }]
+                },
+                options: {
+                    title: {
+                    display: true,
+                    text: 'Courbe du fertilisant',
+                    },
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Durée (h)'
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Fertilisant'
+                            },
+                            ticks: {
+                                min: 0,
+                                max: 100
+                            }
+                        }]
+                    }
+                }
+            });
         </script>
     </body>    
 </html>
