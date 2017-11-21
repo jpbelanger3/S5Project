@@ -69,6 +69,13 @@ var dao = {
         return client.query(sql, [id])
     },
 
+    setConfigDirty: function(client, id) {
+        var sql = ` UPDATE private_config_profile SET is_dirty = true
+                    WHERE id = $1`
+
+        return client.query(sql, [id])
+    },
+
     getModuleId: function(client, MAC) {
         var sql = ` SELECT id
                     FROM module
@@ -114,6 +121,15 @@ var dao = {
                     WHERE cid = $1`
         
         return client.query(sql, [cid])
+    },
+
+    updateProfileField: function(client, profileId, field, value) {
+        console.log(field, value)
+        var sql = ` UPDATE private_config_profile
+                    SET ${field} = $2, is_dirty = true
+                    WHERE id = $1`
+                
+        return client.query(sql, [profileId, value])
     },
 }
 

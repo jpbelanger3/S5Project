@@ -93,7 +93,7 @@
                             <input type="button" value="Sauvegarder"/>
                         </div>
                         <div id="liste_deroulante">
-                            <select name="profil" id="profil">
+                            <select name="profil" id="profil" onchange="profileSwitch(this.value)">
                             <% configListing.forEach((conf) => { %>
                                 <option value= <%= conf.id %> <%= conf.id === config.id ? 'selected' : '' %> >
                                     <%= conf.name %>
@@ -109,7 +109,7 @@
                             <label>Min (°C)</label>
                             <form type="" method=""> 
                                 <span class="param_value">
-                                    <input type="text" name="min_temp" value="<%= config ? config.temperature_min : 0 %>"/>
+                                    <input id="temperature_min" type="text" name="min_temp" value="<%= config ? config.temperature_min : 0 %>" onchange="saveConfig(this)"/>
                                 </span>  
                             </form>
                         </div>
@@ -117,7 +117,7 @@
                             <label>Max (°C)</label>
                             <form type="" method=""> 
                                 <span class="param_value">
-                                    <input type="text" name="max_temp" value="<%= config ? config.temperature_max : 0 %>"/>
+                                    <input id="temperature_max" type="text" name="max_temp" value="<%= config ? config.temperature_max : 0 %>" onchange="saveConfig(this)"/>
                                 </span>  
                             </form>
                         </div>
@@ -129,7 +129,7 @@
                             <label>Min</label>
                             <form type="" method="post"> 
                                 <span class="param_value">
-                                    <input type="text" name="min_ph" value="<%= config ? config.ph_min : 0 %>"/>
+                                    <input id="ph_min" type="text" name="min_ph" value="<%= config ? config.ph_min : 0 %>" onchange="saveConfig(this)"/>
                                 </span>  
                             </form>
                         </div>
@@ -137,7 +137,7 @@
                             <label>Max</label>
                             <form type="" method="post"> 
                                 <span class="param_value">
-                                    <input type="text" name="max_ph" value="<%= config ? config.ph_max : 0 %>"/>
+                                    <input id="ph_max" type="text" name="max_ph" value="<%= config ? config.ph_max : 0 %>" onchange="saveConfig(this)"/>
                                 </span>  
                             </form>
                         </div>
@@ -150,8 +150,8 @@
                         </div>
                         <div id="param_div">
                             <form>
-                                <output class="param_value" id="range_value" name="resultat"><%= config ? config.ec.toFixed(1) : 0.0 %></output>
-                                <input class="range" type="range" name="d" list="tickmarks" min="0" max="10" step="0.1" value="<%= config ? config.ec : 0 %>" oninput="resultat.value=parseFloat(d.value).toFixed(1)"/>
+                                <output id="ec_out" class="param_value" id="range_value" name="resultat"><%= config && config.ec ? config.ec.toFixed(1) : '0.0' %></output>
+                                <input id="ec" class="range" type="range" name="d" list="tickmarks" min="0" max="10" step="0.1" value="<%= config ? config.ec : 0 %>" oninput="resultat.value=parseFloat(d.value).toFixed(1)" onchange="saveConfig(this)"/>
                             </form>  
 
                             <datalist id="tickmarks">
@@ -175,13 +175,13 @@
                         <div class="param_div" style="display: inline-block">
                             <label>ON</label>
                             <span class="param_value">
-                                <input type="text" value="<%= config ? config.light_on : '00:00:00' %>"/>
+                                <input id="light_on" type="text" value="<%= config ? config.light_on : '00:00:00' %>" onchange="saveConfig(this)"/>
                             </span>  
                         </div>
                         <div class="param_div" style="display: inline-block">
                             <label>OFF</label> 
                             <span class="param_value">
-                                <input type="text" value="<%= config ? config.light_off : '00:00:00' %>"/>
+                                <input id="light_off" type="text" value="<%= config ? config.light_off : '00:00:00' %>" onchange="saveConfig(this)"/>
                             </span>  
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                             <label>Photos (temps)</label>
                             <form type="" method="post"> 
                                 <span class="param_value">
-                                    <input type="text" name="freq_photo" value="<%= config ? config.picture_interval : '00:00:00' %>"/>
+                                    <input id="picture_interval" type="text" name="freq_photo" value="<%= config ? config.picture_interval : '00:00:00' %>" onchange="saveConfig(this)"/>
                                 </span>  
                             </form>
                         </div>
@@ -420,6 +420,15 @@
                     })
                 }
 
+                function profileSwitch(profileId) {
+                    var moduleId = $('#module').val()
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/module/' + moduleId + '/switchprofile/' + profileId,
+                        success: _updateConfig
+                    })
+                }
+
                 function logout() {
                     $.ajax({
                         type: 'POST',
@@ -430,10 +439,36 @@
                     })
                 }
 
+                function _updateConfig(config) {
+                    config.ec_out = config.ec
+                    for (var field in config) {
+                        $('#'+field).val(config[field])
+                    }
+                }
+
+                function saveConfig(elem) {
+                    var profileId = $('#profil').val()
+                    var field = $(elem).attr('id')
+                    var value = $(elem).val()
+
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/profile/' + profileId + '/update',
+                        data: {
+                            field: field,
+                            value: value,
+                        },
+                        success: () => { console.log('success saving ' + field + ' to ' + value) },
+                        error: (err) => { console.log(err) }
+                    })
+                }
+
                 ns.logout = logout
                 ns.menuSwitch = menuSwitch
                 ns.moduleSwitch = moduleSwitch
                 ns.initialize = initialize
+                ns.profileSwitch = profileSwitch
+                ns.saveConfig = saveConfig
             }(window))
         </script>
     </body>    

@@ -72,6 +72,20 @@ var api = {
         var needConfigUpdate = result.rows[0].is_dirty
         return needConfigUpdate
     },
+
+    switchProfile: async function(client, cid, mid, profileId) {
+        await Promise.all([
+            dao.assignConfigToModule(client, mid, profileId),
+            dao.setConfigDirty(client, profileId),
+        ])
+        config = await dao.getModuleConfig(client, mid)
+
+        return config.rows[0]
+    },
+
+    updateProfile: async function(client, profileId, field, value) {
+        return dao.updateProfileField(client, profileId, field, value)
+    },
 }
 
 module.exports = api
