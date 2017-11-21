@@ -39,6 +39,7 @@ app.get('/', async function(request, response, next) {
     api.getWebSiteData(client, cid)
       .then((data) => {
         client.release()
+        console.log('*****Website Data******   :')
         console.log(data)
         response.render('pages/accueil_projet', data)
       })

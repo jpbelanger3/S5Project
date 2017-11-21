@@ -26,7 +26,7 @@
                     <li class="image1" id="pic1"></li>
                     <li class="image1" id="pic2"></li>
                     <li class="image1 sub-menu" id="click_action"></li>  
-                        <ul id="subMenu">
+                        <ul id="subMenu" style="display: none;">
                             <li class="image2" id="pic4"></li>
                             <li class="image2" id="pic5"></li>
                             <li class="image2" id="pic6"></li>
@@ -93,12 +93,13 @@
                             <input type="button" value="Sauvegarder"/>
                         </div>
                         <div id="liste_deroulante">
-                            <form method="post" action="???">
-                                <select name="profil" id="profil">
-                                    <option value="profil1">Mon Profil</option>
-                                    <option value="profil2">Mon Autre Profil</option>
-                                </select>
-                            </form>
+                            <select name="profil" id="profil">
+                            <% configListing.forEach((conf) => { %>
+                                <option value= <%= conf.id %> <%= conf.id === config.id ? 'selected' : '' %> >
+                                    <%= conf.name %>
+                                </option>
+                            <% }) %>
+                            </select>
                         </div>
                     </div>
 
@@ -108,7 +109,7 @@
                             <label>Min (°C)</label>
                             <form type="" method=""> 
                                 <span class="param_value">
-                                    <input type="text" name="min_temp" value="18.3"/>
+                                    <input type="text" name="min_temp" value="<%= config ? config.temperature_min : 0 %>"/>
                                 </span>  
                             </form>
                         </div>
@@ -116,7 +117,7 @@
                             <label>Max (°C)</label>
                             <form type="" method=""> 
                                 <span class="param_value">
-                                    <input type="text" name="max_temp" value="25.7"/>
+                                    <input type="text" name="max_temp" value="<%= config ? config.temperature_max : 0 %>"/>
                                 </span>  
                             </form>
                         </div>
@@ -128,7 +129,7 @@
                             <label>Min</label>
                             <form type="" method="post"> 
                                 <span class="param_value">
-                                    <input type="text" name="min_ph" value="0"/>
+                                    <input type="text" name="min_ph" value="<%= config ? config.ph_min : 0 %>"/>
                                 </span>  
                             </form>
                         </div>
@@ -136,7 +137,7 @@
                             <label>Max</label>
                             <form type="" method="post"> 
                                 <span class="param_value">
-                                    <input type="text" name="max_ph" value="14"/>
+                                    <input type="text" name="max_ph" value="<%= config ? config.ph_max : 0 %>"/>
                                 </span>  
                             </form>
                         </div>
@@ -149,60 +150,49 @@
                         </div>
                         <div id="param_div">
                             <form>
-                                <output class="param_value" id="range_value" name="resultat"></output>
-                                <input class="range" type="range" name="d" list="tickmarks" min="0" max="100" step="0.5" oninput="resultat.value=parseInt(d.value)"/>
+                                <output class="param_value" id="range_value" name="resultat"><%= config ? config.ec.toFixed(1) : 0.0 %></output>
+                                <input class="range" type="range" name="d" list="tickmarks" min="0" max="10" step="0.1" value="<%= config ? config.ec : 0 %>" oninput="resultat.value=parseFloat(d.value).toFixed(1)"/>
                             </form>  
 
                             <datalist id="tickmarks">
                                 <option value="0" label="0">
-                                <option value="10">
-                                <option value="20">
-                                <option value="30">
-                                <option value="40">
-                                <option value="50" label="50">
-                                <option value="60">
-                                <option value="70">
-                                <option value="80">
-                                <option value="90">
-                                <option value="100" label="100">
+                                <option value="1">
+                                <option value="2">
+                                <option value="3">
+                                <option value="4">
+                                <option value="5" label="5">
+                                <option value="6">
+                                <option value="7">
+                                <option value="8">
+                                <option value="9">
+                                <option value="10" label="10">
                             </datalist>
                         </div>
                     </div>
 
                     <label id="ecla_action" class="label_deroulant">Eclairage</label>
                     <div id="eclairage" class="section1_div">
-                        <div class="param_div">
-                            <label>LX (cd.sr.m<sub>-2</sub>)</label>
+                        <div class="param_div" style="display: inline-block">
+                            <label>ON</label>
+                            <span class="param_value">
+                                <input type="text" value="<%= config ? config.light_on : '00:00:00' %>"/>
+                            </span>  
                         </div>
-                        <div id="param_div">
-                            <form>
-                                <output class="param_value" id="range_value" name="resultat"></output>
-                                <input class="range" type="range" name="d" list="tickmarks" min="0" max="100" step="0.5" oninput="resultat.value=parseInt(d.value)"/>
-                            </form>  
-
-                            <datalist id="tickmarks">
-                                <option value="0" label="0">
-                                <option value="10">
-                                <option value="20">
-                                <option value="30">
-                                <option value="40">
-                                <option value="50" label="50">
-                                <option value="60">
-                                <option value="70">
-                                <option value="80">
-                                <option value="90">
-                                <option value="100" label="100">
-                            </datalist>
+                        <div class="param_div" style="display: inline-block">
+                            <label>OFF</label> 
+                            <span class="param_value">
+                                <input type="text" value="<%= config ? config.light_off : '00:00:00' %>"/>
+                            </span>  
                         </div>
                     </div>
 
                     <label id="phot_action" class="label_deroulant">Photo</label>
                     <div class="section1_div" id="photo">
                         <div class="param_div">
-                            <label>Photo (par jour)</label>
+                            <label>Photos (temps)</label>
                             <form type="" method="post"> 
                                 <span class="param_value">
-                                    <input type="text" name="freq_photo" value="1"/>
+                                    <input type="text" name="freq_photo" value="<%= config ? config.picture_interval : '00:00:00' %>"/>
                                 </span>  
                             </form>
                         </div>
@@ -402,6 +392,9 @@
 
                 // Tout ce qui doit être exécuter à l'affichage
                 function initialize() {
+                    $('#pic1').addClass('selected')
+                    lastSelectedMenu = $('#pic1')[0]
+                    
                     var date = new Date()
                     var timeRatio = 100 * (date.getHours() * 60 + date.getMinutes()) / (24*60)
                     $('#icone_representation4').css('margin-left', (timeRatio - 11) + '%')
