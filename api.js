@@ -9,10 +9,12 @@ var api = {
             lastSelectedModule = modules.rows.filter((mod) => { return mod.is_last_selected })[0] || modules.rows[0]
             data = await Promise.all([ //execute at same time
                 dao.getReading(client, lastSelectedModule.last_reading_id),
-                dao.getModuleConfig(client, lastSelectedModule.id)
+                dao.getModuleConfig(client, lastSelectedModule.id),
+                dao.getConfigListing(client, cid),
             ])
             var reading = data[0].rows[0]
             var config = data[1].rows[0]
+            var configListing = data[2].rows
         } else {
             lastSelectedModule.id = 0
         }
@@ -21,6 +23,7 @@ var api = {
         results.selectedModuleId = lastSelectedModule.id || null
         results.reading = reading
         results.config = config
+        results.configListing = configListing
 
         return results
     },
@@ -47,7 +50,8 @@ var api = {
         if (midRes.rows.length === 0) {
           midRes = await dao.createNewModule(client, cid, moduleMac)
           mid = midRes.rows[0].id
-          await dao.createConfig(client, cid, mid)
+          var config = await dao.createConfig(client, cid, mid)
+          await dao.assignConfigToModule(client, mid, config.rows[0].id)
         } else {
           mid = midRes.rows[0].id
         }
@@ -67,6 +71,20 @@ var api = {
       
         var needConfigUpdate = result.rows[0].is_dirty
         return needConfigUpdate
+    },
+
+    switchProfile: async function(client, cid, mid, profileId) {
+        await Promise.all([
+            dao.assignConfigToModule(client, mid, profileId),
+            dao.setConfigDirty(client, profileId),
+        ])
+        config = await dao.getModuleConfig(client, mid)
+
+        return config.rows[0]
+    },
+
+    updateProfile: async function(client, profileId, field, value) {
+        return dao.updateProfileField(client, profileId, field, value)
     },
 }
 

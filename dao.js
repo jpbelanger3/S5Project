@@ -30,17 +30,19 @@ var dao = {
     }, 
 
     getModuleConfig: function(client, mid) {
-        var sql = ` SELECT id, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off
-                    FROM private_config_profile
-                    WHERE mid = $1`
+        var sql = ` SELECT pcp.id, pcp.temperature_min, pcp.temperature_max, pcp.ph_min, pcp.ph_max, pcp.ec, pcp.light_on, pcp.light_off, pcp.picture_interval
+                    FROM module 
+                    LEFT JOIN private_config_profile pcp ON module.config_id = pcp.id
+                    WHERE module.id = $1`
         
         return client.query(sql, [mid])
     }, 
 
     isConfigDirty: function(client, mid) {
-        var sql = ` SELECT is_dirty
-                    FROM private_config_profile
-                    WHERE mid = $1`
+        var sql = ` SELECT pcp.is_dirty
+                    FROM module 
+                    LEFT JOIN private_config_profile pcp ON module.config_id = pcp.id
+                    WHERE module.id = $1`
 
         return client.query(sql, [mid])
     },
@@ -67,6 +69,13 @@ var dao = {
         return client.query(sql, [id])
     },
 
+    setConfigDirty: function(client, id) {
+        var sql = ` UPDATE private_config_profile SET is_dirty = true
+                    WHERE id = $1`
+
+        return client.query(sql, [id])
+    },
+
     getModuleId: function(client, MAC) {
         var sql = ` SELECT id
                     FROM module
@@ -83,21 +92,45 @@ var dao = {
         return client.query(sql, [cid, MAC])
     },
 
-    createConfig: function(client, cid, mid) {
-        var sql = ` INSERT INTO private_config_profile (cid, mid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval)
-                    VALUES ($1, $2, '***NEW***', 20, 25, 6, 6.5, 2, '08:00:00', '22:00:00', '04:00:00')`
+    createConfig: function(client, cid) {
+        var sql = ` INSERT INTO private_config_profile (cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval)
+                    VALUES ($1, '***NEW***', 20, 25, 6, 6.5, 2, '08:00:00', '22:00:00', '04:00:00')
+                    RETURNING id`
             
-        return client.query(sql, [cid, mid])
+        return client.query(sql, [cid])
+    },
+
+    assignConfigToModule: function(client, mid, configId) {
+        var sql = ` UPDATE module SET config_id = $2
+                    WHERE id = $1`
+        
+        return client.query(sql, [mid, configId])
     },
 
     getReading: function(client, readingId) {
-        console.log(readingId)
         var sql = ` SELECT temperature, ph, ec 
                     FROM reading
                     WHERE id = $1`
 
         return client.query(sql, [readingId])
-    }
+    },
+
+    getConfigListing: function(client, cid) {
+        var sql = ` SELECT id, name
+                    FROM private_config_profile
+                    WHERE cid = $1`
+        
+        return client.query(sql, [cid])
+    },
+
+    updateProfileField: function(client, profileId, field, value) {
+        console.log(field, value)
+        var sql = ` UPDATE private_config_profile
+                    SET ${field} = $2, is_dirty = true
+                    WHERE id = $1`
+                
+        return client.query(sql, [profileId, value])
+    },
 }
 
 module.exports = dao

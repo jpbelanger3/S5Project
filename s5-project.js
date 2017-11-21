@@ -39,6 +39,7 @@ app.get('/', async function(request, response, next) {
     api.getWebSiteData(client, cid)
       .then((data) => {
         client.release()
+        console.log('*****Website Data******   :')
         console.log(data)
         response.render('pages/accueil_projet', data)
       })
@@ -87,6 +88,37 @@ app.put('/module/switch/:id', async function(request, response, next) {
   .then((data) => {
     client.release()
     response.send(true)
+  })
+  .catch((err) => { next(err) })
+})
+
+// Switch profile
+app.put('/module/:mid/switchprofile/:id', async function(request, response, next) {
+  var cid = request.session.user.id
+  var mid = request.params.mid
+  var profileId = request.params.id
+
+  var client = await pool.connect()
+  api.switchProfile(client, cid, mid, profileId)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})
+
+// Update profile
+app.put('/profile/:id/update', async function(request, response, next) {
+  var cid = request.session.user.id
+  var profileId = request.params.id
+  var field = request.body.field
+  var value = request.body.value
+
+  var client = await pool.connect()
+  api.updateProfile(client, profileId, field, value)
+  .then((data) => {
+    client.release()
+    response.send(data)
   })
   .catch((err) => { next(err) })
 })
