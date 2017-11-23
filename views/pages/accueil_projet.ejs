@@ -275,7 +275,7 @@
         </div>
 
         <script src="/dependencies/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <script src="/dependencies/Chart.min.js"></script>
         
 <!-- script pour mettre à jour la valeur actuelle de l'input range dans un output-->
         <script>
@@ -400,6 +400,8 @@
                     var timeRatio = 100 * (date.getHours() * 60 + date.getMinutes()) / (24*60)
                     $('#icone_representation4').css('margin-left', (timeRatio - 11) + '%')
                     $('#icone_representation4').show()
+
+                    $('#pic4').on('click', _displayTempValues)
                 }
 
                 function menuSwitch(selectedElem) {
@@ -464,6 +466,66 @@
                     })
                 }
 
+                function _displayTempValue(){
+                    var moduleId = $('#module').val()
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/module/' + moduleId + '/temperature',
+                        
+                        success: (data) => { 
+                            var timestamp = data.map(function(x){
+                                return x.timestamp
+                            })
+                            var temp = data.map(function(x){
+                                return x.temp
+                            })
+
+                            _createCharts('Courbe de la température', 'Durée (en h)', 'Température (en °C)', '#FF0000', 'temperature_curve', temp, timestamp, 0, 50)
+                         }
+                    })
+                }
+
+                function _createCharts(title, xLabel, yLabel, color, elmtId, data, timestamp, yMin, yMax){
+                    new Chart(document.getElementById(elmtId), {
+                        type: 'line',
+                        data: {
+                            labels: timestamp,
+                            datasets: [{
+                                data: data,
+                                label: yLabel,
+                                borderColor: color,
+                                lineTension: 0,
+                                fill: false
+                            }]
+                        },
+                        options: {
+                            title: {
+                            display: true,
+                            text: title
+                            },
+                            scales: {
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: xLabel
+                                    }
+                                }],
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: yLabel
+                                    },
+                                    ticks: {
+                                        min: yMin,
+                                        max: yMax
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                }
+
                 ns.logout = logout
                 ns.menuSwitch = menuSwitch
                 ns.moduleSwitch = moduleSwitch
@@ -475,43 +537,7 @@
         
 <!-- Graphics begins -->
         <script>
-            new Chart(document.getElementById("temperature_curve"), {
-                type: 'line',
-                data: {
-                    labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-                    datasets: [{
-                        data: [26,24,25,13,13,17,16,34,27,34,26,26,26,29,28,20,23,15,14,17,36],
-                        label: "Temperature",
-                        borderColor: "#3e95cd",
-                        lineTension: 0,
-                        fill: false
-                    }]
-                },
-                options: {
-                    title: {
-                    display: true,
-                    text: 'Courbe de la temperature (en °C)'
-                    },
-                    scales: {
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Durée (h)'
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Température (°C)'
-                            },
-                            ticks: {
-                                min: 0,
-                                max: 50
-                            }
-                        }]
-                    }
-                }
-            });
+            
         </script>
         <script>
             new Chart(document.getElementById("ph_curve"), {

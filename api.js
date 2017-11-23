@@ -70,6 +70,7 @@ var api = {
         var result = await dao.isConfigDirty(client, mid)
       
         var needConfigUpdate = result.rows[0].is_dirty
+        
         return needConfigUpdate
     },
 
@@ -85,6 +86,12 @@ var api = {
 
     updateProfile: async function(client, profileId, field, value) {
         return dao.updateProfileField(client, profileId, field, value)
+    },
+
+    getTemperature: async function(client, cid, moduleId) {
+        var tempRes = await dao.getTemperature(client, cid, moduleId)
+        
+        return tempRes.rows
     },
 }
 

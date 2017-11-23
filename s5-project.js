@@ -123,6 +123,20 @@ app.put('/profile/:id/update', async function(request, response, next) {
   .catch((err) => { next(err) })
 })
 
+// get temperature
+app.get('/module/:id/temperature', async function(request, response, next) {
+  var cid = request.session.user.id
+  var moduleId = request.params.id
+
+  var client = await pool.connect()
+  api.getTemperature(client, cid, moduleId)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})
+
 /**********************/
 /******** Mbed ********/
 /**********************/

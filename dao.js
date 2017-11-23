@@ -124,13 +124,21 @@ var dao = {
     },
 
     updateProfileField: function(client, profileId, field, value) {
-        console.log(field, value)
         var sql = ` UPDATE private_config_profile
                     SET ${field} = $2, is_dirty = true
                     WHERE id = $1`
                 
         return client.query(sql, [profileId, value])
     },
+
+    getTemperature: function(client, cid, moduleId) {
+        var sql = ` SELECT temp, timestamp
+                    FROM reading
+                    WHERE mid = $1
+                    ORDER BY timestamp ASC`
+
+        return client.query(sql,[moduleId])
+    }
 }
 
 module.exports = dao
