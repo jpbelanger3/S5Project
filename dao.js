@@ -132,7 +132,7 @@ var dao = {
     },
 
     getTemperature: function(client, cid, moduleId) {
-        var sql = ` SELECT temp, timestamp
+        var sql = ` SELECT temperature, timestamp
                     FROM reading
                     WHERE mid = $1
                     ORDER BY timestamp ASC`
