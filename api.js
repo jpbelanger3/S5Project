@@ -93,6 +93,12 @@ var api = {
         
         return tempRes.rows
     },
+
+    getPh: async function(client, cid, moduleId) {
+        var phRes = await dao.getPh(client, cid, moduleId)
+        
+        return phRes.rows
+    },
 }
 
 module.exports = api

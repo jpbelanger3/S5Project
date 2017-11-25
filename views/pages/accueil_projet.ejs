@@ -402,6 +402,7 @@
                     $('#icone_representation4').show()
 
                     $('#pic4').on('click', _displayTempValue)
+                    $('#pic5').on('click', _displayPhValue)
                 }
 
                 function menuSwitch(selectedElem) {
@@ -482,6 +483,26 @@
                             })
 
                             _createCharts('Courbe de la température', 'Durée (en h)', 'Température (en °C)', '#FF0000', 'temperature_curve', temp, timestamp, 0, 50)
+                         }
+                    })
+                }
+
+                function _displayPhValue(){
+                    var moduleId = $('#module').val()
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/module/' + moduleId + '/ph',
+                        
+                        success: (data) => { 
+                            var timestamp = data.map(function(x){
+                                return x.timestamp
+                            })
+                            var ph = data.map(function(x){
+                                return x.ph
+                            })
+
+                            _createCharts('Courbe du PH', 'Durée (en h)', 'PH', '#FF0000', 'ph_curve', ph, timestamp, 0, 14)
                          }
                     })
                 }

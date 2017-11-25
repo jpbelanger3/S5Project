@@ -138,7 +138,16 @@ var dao = {
                     ORDER BY timestamp ASC`
 
         return client.query(sql,[moduleId])
-    }
+    },
+
+    getPh: function(client, cid, moduleId) {
+        var sql = ` SELECT ph, timestamp
+                    FROM reading
+                    WHERE mid = $1
+                    ORDER BY timestamp ASC`
+
+        return client.query(sql,[moduleId])
+    },
 }
 
 module.exports = dao
