@@ -148,6 +148,15 @@ var dao = {
 
         return client.query(sql,[moduleId])
     },
+
+    getFertilisant: function(client, cid, moduleId) {
+        var sql = ` SELECT fertilisant, timestamp
+                    FROM reading
+                    WHERE mid = $1
+                    ORDER BY timestamp ASC`
+
+        return client.query(sql,[moduleId])
+    },
 }
 
 module.exports = dao

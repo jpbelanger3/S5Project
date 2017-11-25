@@ -403,6 +403,7 @@
 
                     $('#pic4').on('click', _displayTempValue)
                     $('#pic5').on('click', _displayPhValue)
+                    $('#pic6').on('click', _displayFertValue)
                 }
 
                 function menuSwitch(selectedElem) {
@@ -503,6 +504,26 @@
                             })
 
                             _createCharts('Courbe du PH', 'Durée (en h)', 'PH', '#FF0000', 'ph_curve', ph, timestamp, 0, 14)
+                         }
+                    })
+                }
+
+                function _displayFertValue(){
+                    var moduleId = $('#module').val()
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/module/' + moduleId + '/fertilisant',
+                        
+                        success: (data) => { 
+                            var timestamp = data.map(function(x){
+                                return x.timestamp
+                            })
+                            var fert = data.map(function(x){
+                                return x.fertilisant
+                            })
+
+                            _createCharts('Courbe du Fertilisant', 'Durée (en h)', 'Fertilisant', '#00FF00', 'fertilisant_curve', fert, timestamp, 0, 100)
                          }
                     })
                 }

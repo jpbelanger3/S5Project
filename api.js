@@ -99,6 +99,12 @@ var api = {
         
         return phRes.rows
     },
+
+    getFertilisant: async function(client, cid, moduleId) {
+        var fertRes = await dao.getFertilisant(client, cid, moduleId)
+        
+        return fertRes.rows
+    },
 }
 
 module.exports = api

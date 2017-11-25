@@ -151,6 +151,20 @@ app.get('/module/:id/ph', async function(request, response, next) {
   .catch((err) => { next(err) })
 })
 
+// get fertilisant
+app.get('/module/:id/fertilisant', async function(request, response, next) {
+  var cid = request.session.user.id
+  var moduleId = request.params.id
+
+  var client = await pool.connect()
+  api.getFertilisant(client, cid, moduleId)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})
+
 /**********************/
 /******** Mbed ********/
 /**********************/
