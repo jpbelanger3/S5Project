@@ -109,7 +109,7 @@ app.put('/module/:mid/switchprofile/:id', async function(request, response, next
 
 // Update profile
 app.put('/profile/:id/update', async function(request, response, next) {
-  var cid = request.session.user.id
+  var cid = request.session.user.id || 1
   var profileId = request.params.id
   var field = request.body.field
   var value = request.body.value
@@ -169,6 +169,23 @@ app.post('/module/:MAC/reading', async function(request, response, next) {
   })
   .catch((err) => { next(err) })
 })
+
+/*********************/
+/****** Android ******/
+/*********************/
+
+app.get('/data', async function(request, response, next) {
+  var cid = 1;
+
+  var client = await pool.connect()
+  api.getDataForAndroidApp(client, cid)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})  
+
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

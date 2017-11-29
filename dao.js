@@ -138,6 +138,18 @@ var dao = {
                     ORDER BY timestamp ASC`
 
         return client.query(sql,[moduleId])
+    },
+
+    getModuleWithConfig: function(client, cid) {
+        var sql = ` SELECT m.id, m.name, 
+                    pcp.id AS profileId, pcp.temperature_min, pcp.temperature_max, pcp.ph_min, pcp.ph_max, pcp.ec, pcp.light_on, pcp.light_off, pcp.picture_interval,
+                    r.temperature AS current_temperature, r.ph AS current_ph, r.ec AS current_ec
+                    FROM module m
+                    LEFT JOIN private_config_profile pcp ON pcp.id = m.config_id
+                    LEFT JOIN reading r ON m.last_reading_id = r.id
+                    WHERE m.cid = $1`
+
+        return client.query(sql, [cid])
     }
 }
 

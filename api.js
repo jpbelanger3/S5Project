@@ -93,6 +93,15 @@ var api = {
         
         return tempRes.rows
     },
+
+    getDataForAndroidApp: async function(client, cid) {
+        var data = {}
+        var moduleRes = await dao.getModuleWithConfig(client, cid)
+
+        data.modules = moduleRes.rows
+        
+        return data
+    },
 }
 
 module.exports = api
