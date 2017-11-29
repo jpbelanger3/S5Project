@@ -137,7 +137,7 @@ app.get('/module/:id/temperature', async function(request, response, next) {
   .catch((err) => { next(err) })
 })
 
-// get temperature
+// get ph
 app.get('/module/:id/ph', async function(request, response, next) {
   var cid = request.session.user.id
   var moduleId = request.params.id

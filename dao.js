@@ -162,9 +162,11 @@ var dao = {
     },
 
     getFertilisant: function(client, cid, moduleId) {
-        var sql = ` SELECT fertilisant, timestamp
-                    FROM reading
-                    WHERE mid = $1
+        var sql = ` SELECT (r.ec / COALESCE(pcp.ec, r.ec)) * 100 AS fertilisant, timestamp
+                    FROM reading r
+                    LEFT JOIN module m ON m.id = r.mid
+                    LEFT JOIN private_config_profile pcp ON pcp.id = m.config_id 
+                    where r.mid = $1
                     ORDER BY timestamp ASC`
 
         return client.query(sql,[moduleId])
