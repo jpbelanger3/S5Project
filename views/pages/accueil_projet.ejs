@@ -402,6 +402,8 @@
                     $('#icone_representation4').show()
 
                     $('#pic4').on('click', _displayTempValue)
+                    $('#pic5').on('click', _displayPhValue)
+                    $('#pic6').on('click', _displayFertValue)
                 }
 
                 function menuSwitch(selectedElem) {
@@ -486,6 +488,46 @@
                     })
                 }
 
+                function _displayPhValue(){
+                    var moduleId = $('#module').val()
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/module/' + moduleId + '/ph',
+                        
+                        success: (data) => { 
+                            var timestamp = data.map(function(x){
+                                return x.timestamp
+                            })
+                            var ph = data.map(function(x){
+                                return x.ph
+                            })
+
+                            _createCharts('Courbe du PH', 'Durée (en h)', 'PH', '#FF0000', 'ph_curve', ph, timestamp, 0, 14)
+                         }
+                    })
+                }
+
+                function _displayFertValue(){
+                    var moduleId = $('#module').val()
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/module/' + moduleId + '/fertilisant',
+                        
+                        success: (data) => { 
+                            var timestamp = data.map(function(x){
+                                return x.timestamp
+                            })
+                            var fert = data.map(function(x){
+                                return x.fertilisant
+                            })
+
+                            _createCharts('Courbe du Fertilisant', 'Durée (en h)', 'Fertilisant', '#00FF00', 'fertilisant_curve', fert, timestamp, 0, 100)
+                         }
+                    })
+                }
+
                 function _createCharts(title, xLabel, yLabel, color, elmtId, data, timestamp, yMin, yMax){
                     new Chart(document.getElementById(elmtId), {
                         type: 'line',
@@ -533,89 +575,6 @@
                 ns.profileSwitch = profileSwitch
                 ns.saveConfig = saveConfig
             }(window))
-        </script>
-        
-<!-- Graphics begins -->
-        <script>
-            
-        </script>
-        <script>
-            new Chart(document.getElementById("ph_curve"), {
-                type: 'line',
-                data: {
-                    labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-                    datasets: [{
-                        data: [7,8,7,6,7,7,8,8,6,6,7,8,9,8,7,7,7,5,6,9,14],
-                        label: "PH",
-                        borderColor: "#3e95cd",
-                        lineTension: 0,
-                        fill: false
-                    }]
-                },
-                options: {
-                    title: {
-                    display: true,
-                    text: 'Courbe du PH'
-                    },
-                    scales: {
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Durée (h)'
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'PH'
-                            },
-                            ticks: {
-                                min: 0,
-                                max: 14
-                            }
-                        }]
-                    }
-                }
-            });
-        </script>
-        <script>
-            new Chart(document.getElementById("fertilisant_curve"), {
-                type: 'line',
-                data: {
-                    labels: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-                    datasets: [{
-                        data: [100,95,90,87,82,78,74,69,65,60,57,54,49,43,35,23,14,8,0,50,100],
-                        label: "Niveau de fertilisant",
-                        borderColor: "#3e95cd",
-                        lineTension: 0,
-                        fill: false
-                    }]
-                },
-                options: {
-                    title: {
-                    display: true,
-                    text: 'Courbe du fertilisant',
-                    },
-                    scales: {
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Durée (h)'
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Fertilisant'
-                            },
-                            ticks: {
-                                min: 0,
-                                max: 100
-                            }
-                        }]
-                    }
-                }
-            });
         </script>
     </body>    
 </html>

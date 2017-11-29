@@ -102,6 +102,18 @@ var api = {
         
         return data
     },
+
+    getPh: async function(client, cid, moduleId) {
+        var phRes = await dao.getPh(client, cid, moduleId)
+        
+        return phRes.rows
+    },
+
+    getFertilisant: async function(client, cid, moduleId) {
+        var fertRes = await dao.getFertilisant(client, cid, moduleId)
+        
+        return fertRes.rows
+    },
 }
 
 module.exports = api
