@@ -147,6 +147,28 @@ app.post('/profile/import', async function(request, response, next) {
   .catch((err) => { next(err) })
 })
 
+//Create Profile
+app.post('/profile/create', async function(request, response, next) {
+  var cid = request.session.user.id
+  var name = request.body.name
+  var temperature_min = request.body.temperature_min
+  var temperature_max = request.body.temperature_max
+  var ph_min = request.body.ph_min
+  var ph_max = request.body.ph_max
+  var ec = request.body.ec
+  var light_on = request.body.light_on
+  var light_off = request.body.light_off
+  var picture_interval = request.body.picture_interval
+
+  var client = await pool.connect()
+  api.createProfile(client, cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})
+
 // get temperature
 app.get('/module/:id/temperature', async function(request, response, next) {
   var cid = request.session.user.id

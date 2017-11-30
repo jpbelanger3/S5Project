@@ -89,8 +89,7 @@
                     <div id="choix_utilisateur">
                         <div id="button1_div">
                             <input id="import-button" type="button" value="Importer"/>
-                            <input type="button" value="Création"/>
-                            <input type="button" value="Sauvegarder"/>
+                            <input id="create-button" type="button" value="Création"/>
                         </div>
                         <div id="liste_deroulante">
                             <select name="profil" id="profil" onchange="profileSwitch(this.value)">
@@ -199,7 +198,7 @@
                     </div>
                 </section>
                 <dialog id="import-dialog" style="display: none">
-                    <h3>Profiles publiques :</h3>
+                    <h3>Profils publiques :</h3>
                     <table id="import-table">
                         <thead>
                             <tr>
@@ -219,7 +218,41 @@
                     </table>
                     <br>
                     <button id="import-profile-button" onclick="importProfile()">Importer</button>
-                    <button id="cancel-profile-button" onclick="closeImportDialog()">Annuler</button>
+                    <button id="cancel-profile-button" onclick="closeDialog()">Annuler</button>
+                </dialog>
+                <dialog id="create-dialog" style="display: none">
+                    <h3>Nouveau profil</h3>
+                    <form id='create-form'>
+                        <label for='create_title'> Nom: </label>
+                        <input id='create_title' name='name' type='text'>
+                        <br>
+                        <label for='create_temperature_min'> Température min: </label>
+                        <input id='create_temperature_min' name='temperature_min' type='text'>
+                        <br>
+                        <label for='create_temperature_max'>  Température max: </label>
+                        <input id='create_temperature_max' name='temperature_max' type='text'>
+                        <br>
+                        <label for='create_ph_min'> Ph max: </label>
+                        <input id='create_ph_min' name='ph_min' type='text'>
+                        <br>
+                        <label for='create_ph_max'> Ph max: </label>
+                        <input id='create_ph_max' name='ph_max' type='text'>
+                        <br>
+                        <label for='create_ec'> Fertilisant: </label>
+                        <input id='create_ec' name='ec' type='text'>
+                        <br>
+                        <label for='create_lon'> Heure éclairage ON: </label>
+                        <input id='create_lon' name='light_on' value='07:00:00' type='text'>
+                        <br>
+                        <label for='create_loff'> Heure éclairage OFF: </label>
+                        <input id='create_loff' name='light_off' value='22:00:00' type='text'>
+                        <br>
+                        <label for='create_pi'> Interval de photo: </label>
+                        <input id='create_pi' name='picture_interval' value='08:00:00' type='text'>
+                        <br>
+                        <input class="button" type="button" value='Créer' onClick="createProfile()">
+                        <input class="button" type="button" value='Annuler' onClick="closeDialog()">
+                    </form>
                 </dialog>
             </div>
             <!-- Fin page 'Settings'-->
@@ -429,6 +462,9 @@
                     $('#pic6').on('click', _displayFertValue)
 
                     $('#import-button').on('click', _displayImportMenu)
+                    $('#create-button').on('click', () => { 
+                        $('#create-dialog').show() 
+                    })
                 }
 
                 function menuSwitch(selectedElem) {
@@ -626,8 +662,8 @@
                     return row
                 }
 
-                function closeImportDialog() {
-                    $('#import-dialog').hide()
+                function closeDialog() {
+                    $('dialog').hide()
                 }
 
                 function importProfile() {
@@ -638,9 +674,9 @@
                             checkedRowsId.push($(elem).attr('data-id'))
                         }
                     })
-                    
+
                     $.ajax({
-                        url: 'profile/import',
+                        url: '/profile/import',
                         type: 'POST',
                         data: { ids: checkedRowsId },
                         success: () => {
@@ -650,14 +686,26 @@
 
                 }
 
+                function createProfile() {
+                    $.ajax({
+                        url: '/profile/create',
+                        type: 'POST',
+                        data: $('#create-form').serialize(),
+                        success: () => {
+                            window.location.href = '/'
+                        }
+                    })
+                }
+
                 ns.logout = logout
                 ns.menuSwitch = menuSwitch
                 ns.moduleSwitch = moduleSwitch
                 ns.initialize = initialize
                 ns.profileSwitch = profileSwitch
                 ns.saveConfig = saveConfig
-                ns.closeImportDialog = closeImportDialog
+                ns.closeDialog = closeDialog
                 ns.importProfile = importProfile
+                ns.createProfile = createProfile
             }(window))
         </script>
     </body>    

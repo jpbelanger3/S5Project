@@ -139,6 +139,13 @@ var dao = {
         return client.query(sql, [cid, id])
     },
 
+    createProfile: function(client, cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval) {
+        var sql = ` INSERT INTO private_config_profile (cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval)
+                    VALUES ($1, $2, $3, $4, $5,$6, $7, $8, $9, $10)`
+        
+        return client.query(sql, [cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval])
+    },
+
     incrementProfileImport: function(client, id) {
         var sql = ` UPDATE public_config_profile 
                     SET import_count = import_count + 1

@@ -382,3 +382,19 @@ section{
     border-collapse: collapse;
     text-align: center;
 }
+
+/*  Create Dialog Style  */
+#create-dialog label {
+    width: 150px;
+    display: inline-block;
+}
+
+#create-dialog input {
+    text-align: center;
+    margin: 15px;
+    height: 30px;
+}
+
+#create-dialog .button {
+    width: 100px;
+}

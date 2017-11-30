@@ -131,6 +131,10 @@ var api = {
 
         return Promise.all(promises)
     },
+
+    createProfile: async function(client, cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval) {
+        return dao.createProfile(client, cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval)
+    }
 }
 
 module.exports = api
