@@ -71,7 +71,7 @@ var api = {
       
         var needConfigUpdate = result.rows[0].is_dirty
         
-        return needConfigUpdate
+        return { needConfigUpdate: needConfigUpdate, mid: mid }
     },
 
     switchProfile: async function(client, cid, mid, profileId) {

@@ -44,15 +44,15 @@
                         <div id="top_table">
                             <div class="table_line">
                                 <div class="sensor_values">
-                                    <label>Valeur température (°C)</label>
-                                    <span><%= reading ? reading.temperature : 0 %></span>
+                                    <label for="r-temperature">Valeur température (°C)</label>
+                                    <span id="r-temperature"><%= reading ? reading.temperature : 0 %></span>
                                 </div>
                                 <!-- <div id="icone_representation1" class="icone_representation"></div> -->
                             </div>
                             <div class="table_line">
                                 <div class="sensor_values">
                                     <label>Valeur PH</label>
-                                    <span><%= reading ? reading.ph : 0 %></span>
+                                    <span id="r-ph"><%= reading ? reading.ph : 0 %></span>
                                 </div>
                                 <!-- <div id="icone_representation2" class="icone_representation"></div> -->
                             </div>
@@ -330,6 +330,7 @@
 
         <script src="/dependencies/jquery-3.2.1.min.js"></script>
         <script src="/dependencies/Chart.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
         
 <!-- script pour mettre à jour la valeur actuelle de l'input range dans un output-->
         <script>
@@ -444,9 +445,13 @@
         <script>
             (function(ns) {
                 var lastSelectedMenu
+                var iosocketNsp
 
                 // Tout ce qui doit être exécuter à l'affichage
                 function initialize() {
+                    var moduleId = $('#module').val()
+                    connectToSocket(moduleId)
+
                     $('#pic1').addClass('selected')
                     lastSelectedMenu = $('#pic1')[0]
                     
@@ -463,6 +468,24 @@
                     $('#create-button').on('click', () => { 
                         $('#create-dialog').show() 
                     })
+                }
+
+                function connectToSocket(mid) {
+                    var iosocketNsp = io('/' + mid)
+                    iosocketNsp.on('reading', function(data) {
+                        console.log('New readings received from server:', data)
+                        _updateReadings(data)
+                    })
+                }
+
+                function _updateReadings(data) {
+                    $('#r-temperature').html(data.temperature)
+                    $('#r-ph').html(data.ph)
+                    var fertRatio = (data.ec/$('#ec').val()) * 100
+                    $('#fertilisant_span').css('background-image','linear-gradient(to right, rgb(85, 233, 85)' + fertRatio + '%, #efeeec 0%)')
+                    var date = new Date()
+                    var timeRatio = 100 * (date.getHours() * 60 + date.getMinutes()) / (24*60)
+                    $('#icone_representation4').css('margin-left', (timeRatio - 11) + '%')
                 }
 
                 function menuSwitch(selectedElem) {

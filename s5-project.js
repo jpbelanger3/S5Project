@@ -30,6 +30,24 @@ const hash = crypto.createHmac('sha256', secret).update('s5-project').digest('he
 app.set('views', __dirname + '/views')
 app.set('view engine', 'ejs')
 
+/*********************/
+/***** Socket.io *****/
+/*********************/
+var server = require('http').createServer(app)
+var io = require('socket.io')(server)
+
+io.on('connection', (socket) => {
+  var clientIp = socket.request.connection.remoteAddress
+  console.log('New Socket connection: ' + clientIp)
+
+  socket.on('disconnect', function() {
+    console.log('Socket.IO --- disconnected ' + clientIp)
+  })
+})
+
+/*********************/
+/****** Website ******/
+/*********************/
 // Function to render main page
 app.get('/', async function(request, response, next) {
   if (request.session && request.session.user) {
@@ -239,7 +257,12 @@ app.post('/module/:MAC/reading', async function(request, response, next) {
   api.postModuleReading(client, moduleMac, timestamp, temperature, ph, ec)
   .then((data) => {
     client.release()
-    response.send(data)
+    io.of('/' + data.mid).emit('reading', { 
+      temperature: temperature,
+      ph: ph,
+      ec: ec,
+    })
+    response.send(data.needConfigUpdate)
   })
   .catch((err) => { next(err) })
 })
@@ -258,9 +281,8 @@ app.get('/data', async function(request, response, next) {
     response.send(data)
   })
   .catch((err) => { next(err) })
-})  
+})
 
-
-app.listen(app.get('port'), function() {
+server.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 })
