@@ -107,6 +107,16 @@ app.put('/module/:mid/switchprofile/:id', async function(request, response, next
   .catch((err) => { next(err) })
 })
 
+app.get('/publicprofiles', async function(request, response, next) {
+  var client = await pool.connect()
+  api.getPublicProfiles(client)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})
+
 // Update profile
 app.put('/profile/:id/update', async function(request, response, next) {
   var cid = request.session.user.id || 1
@@ -116,6 +126,20 @@ app.put('/profile/:id/update', async function(request, response, next) {
 
   var client = await pool.connect()
   api.updateProfile(client, profileId, field, value)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})
+
+//Import profiles
+app.post('/profile/import', async function(request, response, next) {
+  var cid = request.session.user.id
+  var publicProfilesId = request.body.ids
+
+  var client = await pool.connect()
+  api.importProfiles(client, cid, publicProfilesId)
   .then((data) => {
     client.release()
     response.send(data)

@@ -114,6 +114,23 @@ var api = {
         
         return fertRes.rows
     },
+
+    getPublicProfiles: async function(client) {
+        var profileRes = await dao.getPublicConfigListing(client)
+
+        return profileRes.rows
+    },
+
+    importProfiles: async function(client, cid, publicProfilesId) {
+        var promises = []
+        ids = publicProfilesId || []
+        ids.forEach((id) => {
+            promises.push(dao.importProfile(client, cid, id))
+            promises.push(dao.incrementProfileImport(client, id))
+        })
+
+        return Promise.all(promises)
+    },
 }
 
 module.exports = api

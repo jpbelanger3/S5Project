@@ -88,7 +88,7 @@
                 <section id="section1">
                     <div id="choix_utilisateur">
                         <div id="button1_div">
-                            <input type="button" value="Importer"/>
+                            <input id="import-button" type="button" value="Importer"/>
                             <input type="button" value="Création"/>
                             <input type="button" value="Sauvegarder"/>
                         </div>
@@ -198,6 +198,29 @@
                         </div>
                     </div>
                 </section>
+                <dialog id="import-dialog" style="display: none">
+                    <h3>Profiles publiques :</h3>
+                    <table id="import-table">
+                        <thead>
+                            <tr>
+                                <th>Importer</th>
+                                <th>Nom</th>
+                                <th>Température min</th>
+                                <th>Température max</th>
+                                <th>Ph min</th>
+                                <th>Ph max</th>
+                                <th>Fertilisant</th>
+                                <th>Heure éclairage ON</th>
+                                <th>Heure éclairage OFF</th>
+                                <th>Interval de photo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <br>
+                    <button id="import-profile-button" onclick="importProfile()">Importer</button>
+                    <button id="cancel-profile-button" onclick="closeImportDialog()">Annuler</button>
+                </dialog>
             </div>
             <!-- Fin page 'Settings'-->
 
@@ -404,6 +427,8 @@
                     $('#pic4').on('click', _displayTempValue)
                     $('#pic5').on('click', _displayPhValue)
                     $('#pic6').on('click', _displayFertValue)
+
+                    $('#import-button').on('click', _displayImportMenu)
                 }
 
                 function menuSwitch(selectedElem) {
@@ -568,12 +593,71 @@
                     });
                 }
 
+                function _displayImportMenu() {
+                    $('#import-dialog').show()
+                    $.ajax({
+                        type: 'GET',
+                        url: '/publicprofiles',
+                        success: _buildImportRows
+                    })
+                }
+
+                function _buildImportRows(data) {
+                    var table = $('#import-table tbody')
+                    data.forEach((profile) => {
+                        table.append(_constructRow(profile))
+                    })
+                }
+
+                function _constructRow(profile) {
+                    var row = '<tr>'
+                    row += '<td><input class="import-input" type="checkbox" data-id="'+ profile.id + '"></td>'
+                    row += '<td>' + profile.name + '</td>'
+                    row += '<td>' + profile.temperature_min + '</td>'
+                    row += '<td>' + profile.temperature_max + '</td>'
+                    row += '<td>' + profile.ph_min + '</td>'
+                    row += '<td>' + profile.ph_max + '</td>'
+                    row += '<td>' + profile.ec + '</td>'
+                    row += '<td>' + profile.light_on + '</td>'
+                    row += '<td>' + profile.light_off + '</td>'
+                    row += '<td>' + profile.picture_interval + '</td>'
+                    row += '</tr>'
+
+                    return row
+                }
+
+                function closeImportDialog() {
+                    $('#import-dialog').hide()
+                }
+
+                function importProfile() {
+                    var table = $('#import-table tbody')
+                    var checkedRowsId = []
+                    table.find('.import-input').each((i, elem) => {
+                        if ($(elem).prop("checked")) {
+                            checkedRowsId.push($(elem).attr('data-id'))
+                        }
+                    })
+                    
+                    $.ajax({
+                        url: 'profile/import',
+                        type: 'POST',
+                        data: { ids: checkedRowsId },
+                        success: () => {
+                            window.location.href = '/'
+                        }
+                    })
+
+                }
+
                 ns.logout = logout
                 ns.menuSwitch = menuSwitch
                 ns.moduleSwitch = moduleSwitch
                 ns.initialize = initialize
                 ns.profileSwitch = profileSwitch
                 ns.saveConfig = saveConfig
+                ns.closeImportDialog = closeImportDialog
+                ns.importProfile = importProfile
             }(window))
         </script>
     </body>    

@@ -363,3 +363,22 @@ section{
     width: 200px;
     padding-left: 6px;
 }
+
+
+/*  Import Dialog Style  */
+#import-table th, #import-table td {
+    padding: 15px;
+}
+
+#import-table thead tr {
+    border-bottom: 2px black solid;
+}
+
+#import-table tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+#import-table {
+    border-collapse: collapse;
+    text-align: center;
+}

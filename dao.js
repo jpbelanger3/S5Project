@@ -123,6 +123,30 @@ var dao = {
         return client.query(sql, [cid])
     },
 
+    getPublicConfigListing: function(client) {
+        var sql = ` SELECT id, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval
+                    FROM public_config_profile`
+
+        return client.query(sql)
+    },
+
+    importProfile: function(client, cid, id) {
+        var sql = ` INSERT INTO private_config_profile (cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval)
+                    SELECT $1, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval
+                    FROM public_config_profile
+                    WHERE id = $2`
+
+        return client.query(sql, [cid, id])
+    },
+
+    incrementProfileImport: function(client, id) {
+        var sql = ` UPDATE public_config_profile 
+                    SET import_count = import_count + 1
+                    WHERE id = $1`
+
+        return client.query(sql, [id])
+    },
+
     updateProfileField: function(client, profileId, field, value) {
         var sql = ` UPDATE private_config_profile
                     SET ${field} = $2, is_dirty = true
