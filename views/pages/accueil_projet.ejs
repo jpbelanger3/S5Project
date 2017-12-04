@@ -38,7 +38,7 @@
             <!-- Fin Menu Vertical Gauche-->
 
             <!-- Début page 'Home'-->
-            <div id="page_home" class="page_begins">
+            <div id="page_home" class="page_begins pic1">
                 <section id="section2">
                     <div id="sensor_values_table">
                         <div id="top_table">
@@ -84,7 +84,7 @@
             <!-- Fin page 'Home' -->
 
             <!-- Début page 'Settings' -->
-            <div id="page_settings" class="page_begins">
+            <div id="page_settings" class="page_begins pic2">
                 <section id="section1">
                     <div id="choix_utilisateur">
                         <div id="button1_div">
@@ -256,7 +256,7 @@
             <!-- Fin page 'Settings'-->
 
             <!-- Début page temperature graphics -->
-            <div id="page_temp_graph" class="page_begins">
+            <div id="page_temp_graph" class="page_begins pic4">
                 <section id="section4">
                     <canvas id="temperature_curve" width="800" height="400"></canvas>
                 </section>
@@ -264,7 +264,7 @@
             <!-- Fin page temperature graphics -->
 
             <!-- Début page ph graphics -->
-            <div id="page_ph_graph" class="page_begins">
+            <div id="page_ph_graph" class="page_begins pic5">
                 <section id="section5">
                     <canvas id="ph_curve" width="800" height="400"></canvas>
                 </section>
@@ -272,7 +272,7 @@
             <!-- Fin page ph graphics -->
 
             <!-- Début page fertilisant graphics -->
-            <div id="page_fert_graph" class="page_begins">
+            <div id="page_fert_graph" class="page_begins pic6">
                 <section id="section6">
                     <canvas id="fertilisant_curve" width="800" height="400"></canvas>
                 </section>
@@ -280,7 +280,7 @@
             <!-- Fin page fertilisant graphics -->
 
             <!-- Début page 'Pictures' -->
-            <div id="page_picture" class="page_begins">
+            <div id="page_picture" class="page_begins pic7">
                 <section id="section7">
                     <div class="section1_div" id="photo">
                         <div id="photo_split">
@@ -316,7 +316,7 @@
             <!-- Fin page 'Pictures' -->
 
             <!-- Début page Forum -->
-            <div id="page_forum" class="page_begins">
+            <div id="page_forum" class="page_begins pic8">
                 <section id="section8">
                     <div class="WIP">Work In Progress</div>
                 </section>
@@ -489,8 +489,11 @@
                 }
 
                 function menuSwitch(selectedElem) {
-                    $(lastSelectedMenu).removeClass('selected')
                     if (!($(selectedElem).hasClass('sub-menu'))) {
+                        $(lastSelectedMenu).removeClass('selected')
+                        //$(".page_begins").hide()
+                        var id = $(selectedElem).attr('id')
+                        //$('.page_begins.'+id)
                         $(selectedElem).addClass('selected')
                     }
                     

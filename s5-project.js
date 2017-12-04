@@ -137,7 +137,7 @@ app.get('/publicprofiles', async function(request, response, next) {
 
 // Update profile
 app.put('/profile/:id/update', async function(request, response, next) {
-  var cid = request.session.user.id || 1074409392
+  var cid = request.session.user.id || 1082868120
   var profileId = request.params.id
   var field = request.body.field
   var value = request.body.value
@@ -235,7 +235,7 @@ app.get('/module/:id/fertilisant', async function(request, response, next) {
 
 app.get('/module/:MAC/config', async function(request, response, next) {
   var moduleMac = request.params.MAC
-  var cid = request.query.cid || 1074409392
+  var cid = request.query.cid || 1082868120
 
   var client = await pool.connect()
   api.getModuleConfig(client, cid, moduleMac)
