@@ -137,7 +137,7 @@ app.get('/publicprofiles', async function(request, response, next) {
 
 // Update profile
 app.put('/profile/:id/update', async function(request, response, next) {
-  var cid = request.session.user.id || 1
+  var cid = request.session.user.id || 1074409392
   var profileId = request.params.id
   var field = request.body.field
   var value = request.body.value
@@ -235,7 +235,7 @@ app.get('/module/:id/fertilisant', async function(request, response, next) {
 
 app.get('/module/:MAC/config', async function(request, response, next) {
   var moduleMac = request.params.MAC
-  var cid = request.query.cid || 1
+  var cid = request.query.cid || 1074409392
 
   var client = await pool.connect()
   api.getModuleConfig(client, cid, moduleMac)
@@ -249,6 +249,7 @@ app.get('/module/:MAC/config', async function(request, response, next) {
 app.post('/module/:MAC/reading', async function(request, response, next) {
   var moduleMac = request.params.MAC
   var timestamp = request.body.timestamp ? new Date(request.body.timestamp * 1000) : new Date()
+  var cid = request.body.id
 
   console.log('Reading: ', request.body)
   var temperature = parseFloat(request.body.temperature)
@@ -256,7 +257,7 @@ app.post('/module/:MAC/reading', async function(request, response, next) {
   var ec = parseFloat(request.body.ec)
 
   var client = await pool.connect()
-  api.postModuleReading(client, moduleMac, timestamp, temperature, ph, ec)
+  api.postModuleReading(client, cid, moduleMac, timestamp, temperature, ph, ec)
   .then((data) => {
     client.release()
     io.of('/' + data.mid).emit('reading', { 
@@ -274,7 +275,7 @@ app.post('/module/:MAC/reading', async function(request, response, next) {
 /*********************/
 
 app.get('/data', async function(request, response, next) {
-  var cid = 1;
+  var cid = 1074409392;
 
   var client = await pool.connect()
   api.getDataForAndroidApp(client, cid)
