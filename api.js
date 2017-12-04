@@ -57,6 +57,11 @@ var api = {
         }
         var result = await dao.getModuleConfig(client, mid)
         var config = result.rows[0]
+        for(field in config) {
+            if(field !== 'id' && Number.isInteger(config[field])) {
+                config[field] = config[field].toFixed(2)
+            }
+        }
         await dao.cleanConfig(client, config.id)
 
         return config
@@ -94,15 +99,6 @@ var api = {
         return tempRes.rows
     },
 
-    getDataForAndroidApp: async function(client, cid) {
-        var data = {}
-        var moduleRes = await dao.getModuleWithConfig(client, cid)
-
-        data.modules = moduleRes.rows
-        
-        return data
-    },
-
     getPh: async function(client, cid, moduleId) {
         var phRes = await dao.getPh(client, cid, moduleId)
         
@@ -134,7 +130,19 @@ var api = {
 
     createProfile: async function(client, cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval) {
         return dao.createProfile(client, cid, name, temperature_min, temperature_max, ph_min, ph_max, ec, light_on, light_off, picture_interval)
-    }
+    },
+
+    getDataForAndroidApp: async function(client, cid) {
+        var data = {}
+        var moduleRes = await dao.getModuleWithConfig(client, cid)
+        var lastSelectedModule = moduleRes.rows.filter((mod) => { return mod.is_last_selected })[0] || modulesRes.rows[0]
+        var readingRes = await dao.getReading(client, lastSelectedModule.last_reading_id)
+
+        data.modules = moduleRes.rows
+        data.currentReading = readingRes.rows[0]
+        
+        return data
+    },
 }
 
 module.exports = api

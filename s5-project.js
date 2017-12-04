@@ -235,7 +235,7 @@ app.get('/module/:id/fertilisant', async function(request, response, next) {
 
 app.get('/module/:MAC/config', async function(request, response, next) {
   var moduleMac = request.params.MAC
-  var cid = request.query.cid || null
+  var cid = request.query.cid || 1
 
   var client = await pool.connect()
   api.getModuleConfig(client, cid, moduleMac)
