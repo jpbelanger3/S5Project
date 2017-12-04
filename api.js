@@ -59,7 +59,7 @@ var api = {
         var config = result.rows[0]
         for(field in config) {
             if(field !== 'id' && Number.isInteger(config[field])) {
-                config[field] = config[field].toFixed(2)
+                config[field] += 0.000001
             }
         }
         await dao.cleanConfig(client, config.id)
@@ -67,9 +67,17 @@ var api = {
         return config
     },
 
-    postModuleReading: async function(client, moduleMac, timestamp, temperature, ph, ec) {
+    postModuleReading: async function(client, cid, moduleMac, timestamp, temperature, ph, ec) {
         var midRes = await dao.getModuleId(client, moduleMac)
-        var mid = midRes.rows[0].id
+        var mid
+        if(!midRes.rows || midRes.rows.length === 0) {
+            midRes = await dao.createNewModule(client, cid, moduleMac)
+            mid = midRes.rows[0].id
+            var config = await dao.createConfig(client, cid, mid)
+            await dao.assignConfigToModule(client, mid, config.rows[0].id)
+        } else {
+            mid = midRes.rows[0].id
+        }
         var readingResult = await dao.insertReading(client, mid, timestamp, temperature, ph, ec)
         await dao.updateLastReadingId(client, mid, readingResult.rows[0].id)
         var result = await dao.isConfigDirty(client, mid)
