@@ -249,6 +249,8 @@ app.get('/module/:MAC/config', async function(request, response, next) {
 app.post('/module/:MAC/reading', async function(request, response, next) {
   var moduleMac = request.params.MAC
   var timestamp = request.body.timestamp ? new Date(request.body.timestamp * 1000) : new Date()
+
+  console.log('Reading: ', request.body)
   var temperature = parseFloat(request.body.temperature) || null 
   var ph = parseFloat(request.body.ph) || null
   var ec = parseFloat(request.body.ec) || null
