@@ -276,7 +276,7 @@ app.post('/module/:MAC/reading', async function(request, response, next) {
 /*********************/
 
 app.get('/data', async function(request, response, next) {
-  var cid = 1082868120;
+  var cid = 1;
 
   var client = await pool.connect()
   api.getDataForAndroidApp(client, cid)
