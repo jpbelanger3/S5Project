@@ -59,7 +59,7 @@ var api = {
         var config = result.rows[0]
         for(field in config) {
             if(field !== 'id' && Number.isInteger(config[field])) {
-                config[field] = config[field].toFixed(2)
+                config[field] += 0.01
             }
         }
         await dao.cleanConfig(client, config.id)
