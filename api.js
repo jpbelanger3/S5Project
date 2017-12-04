@@ -93,8 +93,8 @@ var api = {
         return dao.updateProfileField(client, profileId, field, value)
     },
 
-    getTemperature: async function(client, cid, moduleId) {
-        var tempRes = await dao.getTemperature(client, cid, moduleId)
+    getTemperature: async function(client, cid, moduleId, chartFilter) {
+        var tempRes = await dao.getTemperature(client, cid, moduleId, chartFilter)
         
         return tempRes.rows
     },

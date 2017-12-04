@@ -258,6 +258,15 @@
             <!-- Début page temperature graphics -->
             <div id="page_temp_graph" class="page_begins">
                 <section id="section4">
+                    <form>
+                        <select class="config_display_chart">
+                            <option id="temp_day">Jour</option>
+                            <option id="temp_week">Semaine</option>
+                            <option  id="temp_month">Mois</option>
+                        </select>
+                    </form>
+                    <input id="graphics_config_day" type="button" value="Aujourd'hui" onClick=""/>
+                    
                     <canvas id="temperature_curve" width="800" height="400"></canvas>
                 </section>
             </div>
@@ -266,6 +275,13 @@
             <!-- Début page ph graphics -->
             <div id="page_ph_graph" class="page_begins">
                 <section id="section5">
+                    <form>
+                        <select class="config_display_chart">
+                            <option>Jour</option>
+                            <option>Semaine</option>
+                            <option>Mois</option>
+                        </select>
+                    </form>
                     <canvas id="ph_curve" width="800" height="400"></canvas>
                 </section>
             </div>
@@ -274,6 +290,13 @@
             <!-- Début page fertilisant graphics -->
             <div id="page_fert_graph" class="page_begins">
                 <section id="section6">
+                    <form>
+                        <select class="config_display_chart">
+                            <option>Jour</option>
+                            <option>Semaine</option>
+                            <option>Mois</option>
+                        </select>
+                    </form>
                     <canvas id="fertilisant_curve" width="800" height="400"></canvas>
                 </section>
             </div>
@@ -464,6 +487,16 @@
                     $('#pic5').on('click', _displayPhValue)
                     $('#pic6').on('click', _displayFertValue)
 
+                    $('temp_day').on('select', function(){
+                        _displayTempValue(_timeFilter(86400000))
+                    })
+                    $('temp_week').on('select', function(){
+                        _displayTempValue(_timeFilter(2,629,800,000))
+                    })
+                    $('temp_month').on('select', function(){
+                        _displayTempValue(_timeFilter(31,557,600,000))
+                    })
+
                     $('#import-button').on('click', _displayImportMenu)
                     $('#create-button').on('click', () => { 
                         $('#create-dialog').show() 
@@ -550,14 +583,14 @@
                     })
                 }
 
-                function _displayTempValue(){
+                function _displayTempValue(param){
                     var moduleId = $('#module').val()
 
                     $.ajax({
                         type: 'GET',
-                        url: '/module/' + moduleId + '/temperature',
+                        url: '/module/' + moduleId + '/temperature?param=' + param,
                         
-                        success: (data) => { 
+                        success: (data) => {
                             var timestamp = data.map(function(x){
                                 return x.timestamp
                             })
@@ -608,6 +641,21 @@
                             _createCharts('Courbe du Fertilisant', 'Durée (en h)', 'Fertilisant', '#00FF00', 'fertilisant_curve', fert, timestamp, 0, 100)
                          }
                     })
+                }
+
+                function _timeFilter(subTime) {
+                    var d = new Date();
+                    d = new Date(d.getTime()-subtime);
+                    var j = d.getDate();
+                    var m = d.getMonth() + 1;
+                    var y = d.getFullYear();
+
+                    if(j<10) j = '0'+j
+                    if(m<10) m = '0'+m
+                    
+                    var dateDuJour = y +'-'+m+'-'+j+' 00:00:000'
+
+                    return dateDuJour;
                 }
 
                 function _createCharts(title, xLabel, yLabel, color, elmtId, data, timestamp, yMin, yMax){

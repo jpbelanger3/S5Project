@@ -307,6 +307,12 @@ section{
     border-color: red; 
 }
 
+.config_display_chart{
+    height: 30px;
+    width: 100px;
+    margin: 0px 0px 0px 40px;
+    background-color: #efeeec;
+}
 /* Fin pages Graphics */
 
 /* Début page picture */
