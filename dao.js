@@ -166,7 +166,7 @@ var dao = {
         if(chartFilter){
             var sql = ` SELECT temperature, timestamp
                         FROM reading
-                        WHERE mid = $1 AND timestamp >= ${chartFilter}
+                        WHERE mid = $1 AND timestamp >= '${chartFilter}'
                         ORDER BY timestamp ASC`
         }
         else

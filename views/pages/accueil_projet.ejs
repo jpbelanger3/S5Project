@@ -265,8 +265,6 @@
                             <option  id="temp_month">Mois</option>
                         </select>
                     </form>
-                    <input id="graphics_config_day" type="button" value="Aujourd'hui" onClick=""/>
-                    
                     <canvas id="temperature_curve" width="800" height="400"></canvas>
                 </section>
             </div>
@@ -292,9 +290,9 @@
                 <section id="section6">
                     <form>
                         <select class="config_display_chart">
-                            <option>Jour</option>
-                            <option>Semaine</option>
-                            <option>Mois</option>
+                            <option value="1">Jour</option>
+                            <option value="2">Semaine</option>
+                            <option value="3">Mois</option>
                         </select>
                     </form>
                     <canvas id="fertilisant_curve" width="800" height="400"></canvas>
@@ -487,14 +485,14 @@
                     $('#pic5').on('click', _displayPhValue)
                     $('#pic6').on('click', _displayFertValue)
 
-                    $('temp_day').on('select', function(){
-                        _displayTempValue(_timeFilter(86400000))
-                    })
-                    $('temp_week').on('select', function(){
-                        _displayTempValue(_timeFilter(2,629,800,000))
-                    })
-                    $('temp_month').on('select', function(){
-                        _displayTempValue(_timeFilter(31,557,600,000))
+                    $('.config_display_chart').on('change', (event) => {
+                        console.log(event.target)
+                        var type = $(event.target).val()
+                        switch(type) {
+                            case 'Jour':  _displayTempValue(_timeFilter('day')); break
+                            case 'Semaine': _displayTempValue(_timeFilter('week')); break
+                            case 'Mois': _displayTempValue(_timeFilter('month')); break
+                        }
                     })
 
                     $('#import-button').on('click', _displayImportMenu)
@@ -588,7 +586,10 @@
 
                 function _displayTempValue(param){
                     var moduleId = $('#module').val()
-
+                    if(typeof param !== 'string') {
+                        param = _timeFilter('day')
+                    }
+                    console.log(param)
                     $.ajax({
                         type: 'GET',
                         url: '/module/' + moduleId + '/temperature?param=' + param,
@@ -646,9 +647,13 @@
                     })
                 }
 
-                function _timeFilter(subTime) {
+                function _timeFilter(type) {
                     var d = new Date();
-                    d = new Date(d.getTime()-subtime);
+                    switch(type) {
+                        case 'day': d.setDate(d.getDate() - 1); break
+                        case 'week': d.setDate(d.getDate() - 7); break
+                        case 'month': d.setDate(d.getDate() - 30); break
+                    }
                     var j = d.getDate();
                     var m = d.getMonth() + 1;
                     var y = d.getFullYear();
@@ -656,7 +661,7 @@
                     if(j<10) j = '0'+j
                     if(m<10) m = '0'+m
                     
-                    var dateDuJour = y +'-'+m+'-'+j+' 00:00:000'
+                    var dateDuJour = y +'-'+m+'-'+j+' 00:00:00'
 
                     return dateDuJour;
                 }
