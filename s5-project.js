@@ -188,12 +188,13 @@ app.post('/profile/create', async function(request, response, next) {
 })
 
 // get temperature
-app.get('/module/:id/temperature', async function(request, response, next) {
+app.get('/module/:id/temperature/', async function(request, response, next) {
   var cid = request.session.user.id
   var moduleId = request.params.id
+  var chartFilter = request.query.param
 
   var client = await pool.connect()
-  api.getTemperature(client, cid, moduleId)
+  api.getTemperature(client, cid, moduleId, chartFilter)
   .then((data) => {
     client.release()
     response.send(data)

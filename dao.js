@@ -162,11 +162,20 @@ var dao = {
         return client.query(sql, [profileId, value])
     },
 
-    getTemperature: function(client, cid, moduleId) {
+    getTemperature: function(client, cid, moduleId, chartFilter) {
+        if(chartFilter){
+            var sql = ` SELECT temperature, timestamp
+                        FROM reading
+                        WHERE mid = $1 AND timestamp >= ${chartFilter}
+                        ORDER BY timestamp ASC`
+        }
+        else
+        {
         var sql = ` SELECT temperature, timestamp
                     FROM reading
                     WHERE mid = $1
                     ORDER BY timestamp ASC`
+        }
 
         return client.query(sql,[moduleId])
     },
