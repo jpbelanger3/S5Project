@@ -251,9 +251,9 @@ app.post('/module/:MAC/reading', async function(request, response, next) {
   var timestamp = request.body.timestamp ? new Date(request.body.timestamp * 1000) : new Date()
 
   console.log('Reading: ', request.body)
-  var temperature = parseFloat(request.body.temperature) || null 
-  var ph = parseFloat(request.body.ph) || null
-  var ec = parseFloat(request.body.ec) || null
+  var temperature = parseFloat(request.body.temperature)
+  var ph = parseFloat(request.body.ph)
+  var ec = parseFloat(request.body.ec)
 
   var client = await pool.connect()
   api.postModuleReading(client, moduleMac, timestamp, temperature, ph, ec)
