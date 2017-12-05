@@ -660,7 +660,7 @@
                 }
 
                 function _createCharts(title, xLabel, yLabel, color, elmtId, data, timestamp, yMin, yMax){
-                    new Chart(document.getElementById(elmtId), {
+                    var chart = new Chart(document.getElementById(elmtId), {
                         type: 'line',
                         data: {
                             labels: timestamp,
@@ -697,6 +697,10 @@
                             }
                         }
                     });
+
+                    if(chart){
+                        chart.destroy();
+                    }
                 }
 
                 function _displayImportMenu() {
