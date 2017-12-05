@@ -569,11 +569,12 @@
                 }
 
                 function _displayTempValue(param){
+                    $('#pic4').off('click', _displayTempValue)
+
                     var moduleId = $('#module').val()
                     if(typeof param !== 'string') {
                         param = _timeFilter('day')
                     }
-                    console.log(param)
                     $.ajax({
                         type: 'GET',
                         url: '/module/' + moduleId + '/temperature?param=' + param,
@@ -592,6 +593,8 @@
                 }
 
                 function _displayPhValue(param){
+                    $('#pic5').off('click', _displayPhValue)
+
                     var moduleId = $('#module').val()
                     if(typeof param !== 'string') {
                         param = _timeFilter('day')
@@ -614,6 +617,8 @@
                 }
 
                 function _displayFertValue(param){
+                    $('#pic6').off('click', _displayFertValue)
+
                     var moduleId = $('#module').val()
                     if(typeof param !== 'string') {
                         param = _timeFilter('day')
