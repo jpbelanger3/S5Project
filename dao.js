@@ -171,31 +171,49 @@ var dao = {
         }
         else
         {
-        var sql = ` SELECT temperature, timestamp
-                    FROM reading
-                    WHERE mid = $1
-                    ORDER BY timestamp ASC`
+            var sql = ` SELECT temperature, timestamp
+                        FROM reading
+                        WHERE mid = $1
+                        ORDER BY timestamp ASC`
         }
 
         return client.query(sql,[moduleId])
     },
     
-    getPh: function(client, cid, moduleId) {
-        var sql = ` SELECT ph, timestamp
-                    FROM reading
-                    WHERE mid = $1
-                    ORDER BY timestamp ASC`
+    getPh: function(client, cid, moduleId, chartFilter) {
+        if(chartFilter){
+            var sql = ` SELECT ph, timestamp
+            FROM reading
+            WHERE mid = $1 AND timestamp >= '${chartFilter}'
+            ORDER BY timestamp ASC`
+        }
+        else{
+            var sql = ` SELECT ph, timestamp
+                        FROM reading
+                        WHERE mid = $1
+                        ORDER BY timestamp ASC`
+        }
 
         return client.query(sql,[moduleId])
     },
 
-    getFertilisant: function(client, cid, moduleId) {
-        var sql = ` SELECT (r.ec / COALESCE(pcp.ec, r.ec)) * 100 AS fertilisant, timestamp
-                    FROM reading r
-                    LEFT JOIN module m ON m.id = r.mid
-                    LEFT JOIN private_config_profile pcp ON pcp.id = m.config_id 
-                    where r.mid = $1
-                    ORDER BY timestamp ASC`
+    getFertilisant: function(client, cid, moduleId, chartFilter) {
+        if(chartFilter){
+            var sql = ` SELECT (r.ec / COALESCE(pcp.ec, r.ec)) * 100 AS fertilisant, timestamp
+            FROM reading r
+            LEFT JOIN module m ON m.id = r.mid
+            LEFT JOIN private_config_profile pcp ON pcp.id = m.config_id 
+            where r.mid = $1 AND timestamp >= '${chartFilter}'
+            ORDER BY timestamp ASC`
+        }
+        else{
+            var sql = ` SELECT (r.ec / COALESCE(pcp.ec, r.ec)) * 100 AS fertilisant, timestamp
+                        FROM reading r
+                        LEFT JOIN module m ON m.id = r.mid
+                        LEFT JOIN private_config_profile pcp ON pcp.id = m.config_id 
+                        where r.mid = $1
+                        ORDER BY timestamp ASC`
+        }
 
         return client.query(sql,[moduleId])
     },
