@@ -710,6 +710,7 @@
 
                 function _buildImportRows(data) {
                     var table = $('#import-table tbody')
+                    table.empty()
                     data.forEach((profile) => {
                         table.append(_constructRow(profile))
                     })
