@@ -107,14 +107,14 @@ var api = {
         return tempRes.rows
     },
 
-    getPh: async function(client, cid, moduleId) {
-        var phRes = await dao.getPh(client, cid, moduleId)
+    getPh: async function(client, cid, moduleId, chartFilter) {
+        var phRes = await dao.getPh(client, cid, moduleId, chartFilter)
         
         return phRes.rows
     },
 
-    getFertilisant: async function(client, cid, moduleId) {
-        var fertRes = await dao.getFertilisant(client, cid, moduleId)
+    getFertilisant: async function(client, cid, moduleId, chartFilter) {
+        var fertRes = await dao.getFertilisant(client, cid, moduleId, chartFilter)
         
         return fertRes.rows
     },

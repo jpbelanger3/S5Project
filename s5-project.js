@@ -188,7 +188,7 @@ app.post('/profile/create', async function(request, response, next) {
 })
 
 // get temperature
-app.get('/module/:id/temperature/', async function(request, response, next) {
+app.get('/module/:id/temperature', async function(request, response, next) {
   var cid = request.session.user.id
   var moduleId = request.params.id
   var chartFilter = request.query.param
@@ -206,9 +206,10 @@ app.get('/module/:id/temperature/', async function(request, response, next) {
 app.get('/module/:id/ph', async function(request, response, next) {
   var cid = request.session.user.id
   var moduleId = request.params.id
+  var chartFilter = request.query.param
 
   var client = await pool.connect()
-  api.getPh(client, cid, moduleId)
+  api.getPh(client, cid, moduleId, chartFilter)
   .then((data) => {
     client.release()
     response.send(data)
@@ -220,9 +221,10 @@ app.get('/module/:id/ph', async function(request, response, next) {
 app.get('/module/:id/fertilisant', async function(request, response, next) {
   var cid = request.session.user.id
   var moduleId = request.params.id
+  var chartFilter = request.query.param
 
   var client = await pool.connect()
-  api.getFertilisant(client, cid, moduleId)
+  api.getFertilisant(client, cid, moduleId, chartFilter)
   .then((data) => {
     client.release()
     response.send(data)

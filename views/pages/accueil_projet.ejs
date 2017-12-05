@@ -260,9 +260,9 @@
                 <section id="section4">
                     <form>
                         <select class="config_display_chart">
-                            <option id="temp_day">Jour</option>
-                            <option id="temp_week">Semaine</option>
-                            <option  id="temp_month">Mois</option>
+                            <option>Jour</option>
+                            <option>Semaine</option>
+                            <option>Mois</option>
                         </select>
                     </form>
                     <canvas id="temperature_curve" width="800" height="400"></canvas>
@@ -290,9 +290,9 @@
                 <section id="section6">
                     <form>
                         <select class="config_display_chart">
-                            <option value="1">Jour</option>
-                            <option value="2">Semaine</option>
-                            <option value="3">Mois</option>
+                            <option>Jour</option>
+                            <option>Semaine</option>
+                            <option>Mois</option>
                         </select>
                     </form>
                     <canvas id="fertilisant_curve" width="800" height="400"></canvas>
@@ -447,12 +447,28 @@
                     $('#pic5').on('click', _displayPhValue)
                     $('#pic6').on('click', _displayFertValue)
 
-                    $('.config_display_chart').on('change', (event) => {
+                    $('#config_display_chart_temp').on('change', (event) => {
                         var type = $(event.target).val()
                         switch(type) {
                             case 'Jour':  _displayTempValue(_timeFilter('day')); break
                             case 'Semaine': _displayTempValue(_timeFilter('week')); break
                             case 'Mois': _displayTempValue(_timeFilter('month')); break
+                        }
+                    })
+                    $('#config_display_chart_ph').on('change', (event) => {
+                        var type = $(event.target).val()
+                        switch(type) {
+                            case 'Jour':  _displayPhValue(_timeFilter('day')); break
+                            case 'Semaine': _displayPhValue(_timeFilter('week')); break
+                            case 'Mois': _displayPhValue(_timeFilter('month')); break
+                        }
+                    })
+                    $('#config_display_chart_fert').on('change', (event) => {
+                        var type = $(event.target).val()
+                        switch(type) {
+                            case 'Jour':  _displayFertValue(_timeFilter('day')); break
+                            case 'Semaine': _displayFertValue(_timeFilter('week')); break
+                            case 'Mois': _displayFertValue(_timeFilter('month')); break
                         }
                     })
 
@@ -568,12 +584,14 @@
                     })
                 }
 
-                function _displayPhValue(){
+                function _displayPhValue(param){
                     var moduleId = $('#module').val()
-
+                    if(typeof param !== 'string') {
+                        param = _timeFilter('day')
+                    }
                     $.ajax({
                         type: 'GET',
-                        url: '/module/' + moduleId + '/ph',
+                        url: '/module/' + moduleId + '/ph?param=' + param,
                         
                         success: (data) => { 
                             var timestamp = data.map(function(x){
@@ -588,12 +606,14 @@
                     })
                 }
 
-                function _displayFertValue(){
+                function _displayFertValue(param){
                     var moduleId = $('#module').val()
-
+                    if(typeof param !== 'string') {
+                        param = _timeFilter('day')
+                    }
                     $.ajax({
                         type: 'GET',
-                        url: '/module/' + moduleId + '/fertilisant',
+                        url: '/module/' + moduleId + '/fertilisant?param' + param,
                         
                         success: (data) => { 
                             var timestamp = data.map(function(x){
