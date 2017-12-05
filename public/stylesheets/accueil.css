@@ -36,14 +36,14 @@ nav{
     font-size: 1.2em;
 }
 
-#pic1{ background:url("../images/accueil.png") no-repeat;}
-#pic2{ background:url("../images/param.png") no-repeat;}
-#click_action{ background:url("../images/courbe.png") no-repeat;}
-#pic4{ background:url("../images/temp.png") no-repeat;}
-#pic5{ background:url("../images/ph.png") no-repeat;}
-#pic6{ background:url("../images/image_projet.png") no-repeat;}
-#pic7{ background:url("../images/photo.png") no-repeat;}
-#pic8{ background:url("../images/forum.png") no-repeat;}
+#pic1{ background:url("../images/accueil.png") no-repeat; background-color: white;}
+#pic2{ background:url("../images/param.png") no-repeat; background-color: white;}
+#click_action{ background:url("../images/courbe.png") no-repeat; background-color: white;}
+#pic4{ background:url("../images/temp.png") no-repeat; background-color: white;}
+#pic5{ background:url("../images/ph.png") no-repeat; background-color: white;}
+#pic6{ background:url("../images/image_projet.png") no-repeat; background-color: white;}
+#pic7{ background:url("../images/photo.png") no-repeat; background-color: white;}
+#pic8{ background:url("../images/forum.png") no-repeat; background-color: white;}
 #picture_home{ background:url("../images/NO_ID_BIG.png") no-repeat;}
 
 #pic1, #pic2, #click_action, #pic4, #pic5, #pic6, #pic7, #pic8, #picture_home{
@@ -153,7 +153,7 @@ section{
     justify-content: center;
 }
 
-#range_value{
+#ec_out{
     font-size: 1.5em;
 }
 
