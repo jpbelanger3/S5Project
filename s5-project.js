@@ -137,7 +137,7 @@ app.get('/publicprofiles', async function(request, response, next) {
 
 // Update profile
 app.put('/profile/:id/update', async function(request, response, next) {
-  var cid = request.session.user.id || 1082868120
+  var cid = request.session.user ? request.session.user.id : 1
   var profileId = request.params.id
   var field = request.body.field
   var value = request.body.value
