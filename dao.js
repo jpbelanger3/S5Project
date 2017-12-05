@@ -199,7 +199,7 @@ var dao = {
 
     getFertilisant: function(client, cid, moduleId, chartFilter) {
         if(chartFilter){
-            var sql = ` SELECT (r.ec / COALESCE(pcp.ec, r.ec)) * 100 AS fertilisant, timestamp
+            var sql = ` SELECT (r.ec / (COALESCE(pcp.ec, r.ec) + 0.001)) * 100 AS fertilisant, timestamp
             FROM reading r
             LEFT JOIN module m ON m.id = r.mid
             LEFT JOIN private_config_profile pcp ON pcp.id = m.config_id 
@@ -207,7 +207,7 @@ var dao = {
             ORDER BY timestamp ASC`
         }
         else{
-            var sql = ` SELECT (r.ec / COALESCE(pcp.ec, r.ec)) * 100 AS fertilisant, timestamp
+            var sql = ` SELECT (r.ec / (COALESCE(pcp.ec, r.ec) + 0.001)) * 100 AS fertilisant, timestamp
                         FROM reading r
                         LEFT JOIN module m ON m.id = r.mid
                         LEFT JOIN private_config_profile pcp ON pcp.id = m.config_id 
