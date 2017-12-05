@@ -428,16 +428,13 @@
             (function(ns) {
                 var lastSelectedMenu
                 var iosocketNsp
+                var firstMenuSelect = true
 
                 // Tout ce qui doit être exécuter à l'affichage
                 function initialize() {
                     var moduleId = $('#module').val()
                     connectToSocket(moduleId)
 
-                    var elem = localStorage.getItem('lastSelectedMenu')
-                    console.log(elem)
-                    menuSwitch($('#'+elem)[0])
-                    
                     var date = new Date()
                     var timeRatio = 100 * (date.getHours() * 60 + date.getMinutes()) / (24*60)
                     $('#icone_representation4').css('margin-left', (timeRatio - 11) + '%')
@@ -476,6 +473,9 @@
                     $('#create-button').on('click', () => { 
                         $('#create-dialog').show() 
                     })
+
+                    var elem = localStorage.getItem('lastSelectedMenu')
+                    menuSwitch($('#'+elem)[0])
                 }
 
                 function connectToSocket(mid) {
@@ -504,7 +504,14 @@
                         $('.page_begins.'+id).show()
                         $(selectedElem).addClass('selected')
                         lastSelectedMenu = selectedElem
-                        localStorage.setItem('lastSelectedMenu',id)
+                        localStorage.setItem('lastSelectedMenu', id)
+
+                        if($(selectedElem).hasClass('image2') && firstMenuSelect) {)
+                            $('#click_action').trigger('click')
+                            $(selectedElem).click()
+                        }
+
+                        firstMenuSelect = false
                     }
                 }
 
