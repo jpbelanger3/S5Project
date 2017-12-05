@@ -78,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="picture_home"></div>
+                    <img id="picture_home" src="" />
                 </section>
             </div>
             <!-- Fin page 'Home' -->
@@ -477,6 +477,7 @@
 
                     var elem = localStorage.getItem('lastSelectedMenu')
                     menuSwitch($('#'+elem)[0])
+                    displayPhoto(moduleId)
                 }
 
                 function connectToSocket(mid) {
@@ -767,6 +768,16 @@
                     })
                 }
 
+                function displayPhoto(mid) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/module/' + mid + '/photo',
+                        success: (data) => {
+                            document.getElementById("picture_home").src = "data:image/png;base64," + data;
+                        }
+                    })
+                }
+
                 ns.logout = logout
                 ns.menuSwitch = menuSwitch
                 ns.moduleSwitch = moduleSwitch
@@ -776,6 +787,7 @@
                 ns.closeDialog = closeDialog
                 ns.importProfile = importProfile
                 ns.createProfile = createProfile
+                ns.displayPhoto = displayPhoto
             }(window))
         </script>
     </body>    

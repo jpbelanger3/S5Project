@@ -274,6 +274,33 @@ app.post('/module/:MAC/reading', async function(request, response, next) {
 })
 
 /*********************/
+/******* Photo *******/
+/*********************/
+app.post('/module/:id/photo', async function(request, response, next) {
+  var mid = request.params.id
+
+  var client = await pool.connect()
+  api.postPhoto(client, mid, request.body.photo)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})
+
+app.get('/module/:id/photo', async function(request, response, next) {
+  var id = request.params.id
+
+  var client = await pool.connect()
+  api.getPhoto(client, id)
+  .then((data) => {
+    client.release()
+    response.send(data)
+  })
+  .catch((err) => { next(err) })
+})
+
+/*********************/
 /****** Android ******/
 /*********************/
 

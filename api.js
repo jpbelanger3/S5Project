@@ -151,6 +151,15 @@ var api = {
         
         return data
     },
+
+    postPhoto: async function(client, mid, photo) {
+        return dao.insertPhoto(client, mid, photo)
+    },
+
+    getPhoto: async function(client, id) {
+        var res = await dao.getPhoto(client, id)
+        return res.rows[0].data
+    }
 }
 
 module.exports = api

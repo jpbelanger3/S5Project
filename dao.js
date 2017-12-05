@@ -229,6 +229,22 @@ var dao = {
 
         return client.query(sql, [cid])
     },
+
+    insertPhoto: function(client, mid, photo) {
+        var sql = ` INSERT INTO picture (mid, data)
+                    VALUES($1, $2)`
+
+        return client.query(sql, [mid, photo])
+    },
+
+    getPhoto: function(client, id) {
+        var sql = ` SELECT data
+                    FROM picture
+                    WHERE mid = $1
+                    ORDER BY timestamp DESC LIMIT 1`
+
+        return client.query(sql, [id])
+    }
 }
 
 module.exports = dao
