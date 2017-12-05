@@ -608,7 +608,7 @@
                                 return x.ph
                             })
 
-                            _createCharts('Courbe du PH', 'Date', 'PH', '#FF0000', 'ph_curve', ph, timestamp, 0, 14)
+                            _createCharts('Courbe du PH', 'Date', 'PH', '#0000FF', 'ph_curve', ph, timestamp, 0, 14)
                          }
                     })
                 }
@@ -709,6 +709,7 @@
 
                 function _buildImportRows(data) {
                     var table = $('#import-table tbody')
+                    table.empty()
                     data.forEach((profile) => {
                         table.append(_constructRow(profile))
                     })

@@ -142,7 +142,6 @@ app.put('/profile/:id/update', async function(request, response, next) {
   var profileId = request.params.id
   var field = request.body.field
   var value = request.body.value
-
   var client = await pool.connect()
   api.updateProfile(client, profileId, field, value)
   .then((data) => {
