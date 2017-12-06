@@ -257,7 +257,7 @@ app.post('/module/:MAC/reading', async function(request, response, next) {
   console.log('Reading: ', request.body)
   var temperature = parseFloat(request.body.temperature)
   var ph = parseFloat(request.body.ph)
-  var ec = parseFloat(request.body.ec)
+  var ec = parseFloat(request.body.ec)/1000
 
   var client = await pool.connect()
   api.postModuleReading(client, cid, moduleMac, timestamp, temperature, ph, ec)
