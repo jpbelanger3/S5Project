@@ -305,7 +305,7 @@ app.get('/module/:id/photo', async function(request, response, next) {
 /*********************/
 
 app.get('/data', async function(request, response, next) {
-  var cid = 1;
+  var cid = 1082579473;
 
   var client = await pool.connect()
   api.getDataForAndroidApp(client, cid)
